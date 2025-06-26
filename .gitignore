@@ -8,11 +8,6 @@ dist/
 .env
 .env.*.local
 
-# lock files (optional)
-package-lock.json
-# OR if using yarn:
-# yarn.lock
-
 # testing
 test-utils/
 
