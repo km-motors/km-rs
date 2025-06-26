@@ -1,4 +1,24 @@
-node_modules
+# dependencies
+node_modules/
+
+# production builds
+dist/
+
+# local env files
 .env
-test-utils
+.env.*.local
+
+# lock files (optional)
 package-lock.json
+# OR if using yarn:
+# yarn.lock
+
+# testing
+test-utils/
+
+# system files
+.DS_Store
+*.log
+
+# VS Code settings (optional)
+.vscode/
