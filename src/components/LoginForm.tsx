@@ -31,7 +31,7 @@ export default function LoginForm() {
       setError(error.message);
     }
     else {
-      navigate('/home');
+      navigate('/dashboard');
     }
 
     setLoading(false);
