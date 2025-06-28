@@ -38,21 +38,23 @@ export default function LoginForm() {
   };
 
   return (
-    <Box mx="auto" maw={320}>
+    <Box mx="auto" w="80%">
       <form onSubmit={form.onSubmit(handleLogin)}>
         <TextInput
           label="Email"
           type="email"
           {...form.getInputProps('email')}
+          style={{color:"var(--mantine-color-blue-3)"}}
         />
         <PasswordInput
           mt="sm"
           label="Password"
           {...form.getInputProps('password')}
+          style={{color:"var(--mantine-color-blue-3)"}}
         />
-        {error && <Alert color="red" mt="sm">{error}</Alert>}
-        <Button fullWidth mt="lg" type="submit" loading={loading}>
-          Log In
+        {error && <Alert color="red" styles={{message:{color:"var(--mantine-color-red-6)"}}} mt="sm">{error}</Alert>}
+        <Button fullWidth mt="lg" type="submit" loading={loading} variant="subtle" color="var(--mantine-color-blue-6)">
+          GET STARTED
         </Button>
       </form>
     </Box>
