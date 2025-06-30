@@ -1,4 +1,4 @@
-import { ActionIcon, ActionIconProps, CSSProperties, Group } from "@mantine/core";
+import { ActionIcon, ActionIconProps, CSSProperties, Group, Tooltip } from "@mantine/core";
 import { useLocalStorage, useMediaQuery } from "@mantine/hooks";
 // + icons
 import { ReactComponent as IconIncome } from "@/icons/briefcase.svg?react";
@@ -20,7 +20,7 @@ const actionIconProps = {
     style: {} as CSSProperties,
 } as ActionIconProps;
 
-const iconProps = {
+export const iconProps = {
     color: "var(--mantine-primary-color-6)",
     style: { strokeWidth: "1" } as CSSProperties,
     width: 30,
@@ -31,6 +31,11 @@ const actionIconGroupSectionProps = {
     w: 85,
     h: 50,
     color: "var(--mantine-primary-color-0)",
+}
+
+const tooltipProps = {
+    openDelay: 1000,
+    closeDelay: 100
 }
 
 enum PAGES {
@@ -45,21 +50,31 @@ export function FloatingMenu() {
     const [currentPage, setCurrentPage] = useLocalStorage({ key: "--current-page", defaultValue: PAGES.INCOME });
     return (
         <Group style={{ border: "0.05rem solid var(--mantine-primary-color-6)", borderRadius: "var(--mantine-radius-xl)", flexWrap: "nowrap" }} pos="relative" gap={0} px={10} py={3}>
-            <ActionIcon {...actionIconProps} onClick={() => setCurrentPage(PAGES.INCOME)}>
-                {currentPage == PAGES.INCOME ? <IconIncomeFilled  {...iconProps} /> : <IconIncome {...iconProps} />}
-            </ActionIcon>
-            <ActionIcon {...actionIconProps} onClick={() => setCurrentPage(PAGES.OUTCOME)}>
-                {currentPage == PAGES.OUTCOME ? < IconOutcomeFilled {...iconProps} /> : <IconOutcome {...iconProps} />}
-            </ActionIcon>
+            <Tooltip label="Income" {...tooltipProps}>
+                <ActionIcon {...actionIconProps} onClick={() => setCurrentPage(PAGES.INCOME)}>
+                    {currentPage == PAGES.INCOME ? <IconIncomeFilled  {...iconProps} /> : <IconIncome {...iconProps} />}
+                </ActionIcon>
+            </Tooltip>
+            <Tooltip label="Outcome" {...tooltipProps}>
+                <ActionIcon {...actionIconProps} onClick={() => setCurrentPage(PAGES.OUTCOME)}>
+                    {currentPage == PAGES.OUTCOME ? < IconOutcomeFilled {...iconProps} /> : <IconOutcome {...iconProps} />}
+                </ActionIcon>
+            </Tooltip>
             <ActionIcon.GroupSection {...actionIconGroupSectionProps} />
-            <ActionIcon {...actionIconProps} onClick={() => setCurrentPage(PAGES.DEBIT)}>
-                {currentPage == PAGES.DEBIT ? < IconDebitFilled {...iconProps} /> : <IconDebit {...iconProps} />}
-            </ActionIcon>
-            <ActionIcon {...actionIconProps} onClick={() => setCurrentPage(PAGES.PAYMENT)}>
-                {currentPage == PAGES.PAYMENT ? < IconDebitPaymentFilled {...iconProps} /> : <IconDebitPayment {...iconProps} />}
-            </ActionIcon>
+            <Tooltip label="Debit" {...tooltipProps}>
+                <ActionIcon {...actionIconProps} onClick={() => setCurrentPage(PAGES.DEBIT)}>
+                    {currentPage == PAGES.DEBIT ? < IconDebitFilled {...iconProps} /> : <IconDebit {...iconProps} />}
+                </ActionIcon>
+            </Tooltip>
+            <Tooltip label="Payment" {...tooltipProps}>
+                <ActionIcon {...actionIconProps} onClick={() => setCurrentPage(PAGES.PAYMENT)}>
+                    {currentPage == PAGES.PAYMENT ? < IconDebitPaymentFilled {...iconProps} /> : <IconDebitPayment {...iconProps} />}
+                </ActionIcon>
+            </Tooltip>
             {/* postion:absolute */}
-            <FloatingActionIcon {...actionIconProps} style={{ left: "50%", translate: "-50% -100%", position: "absolute" }} color="var(--mantine-primary-color-6)" variant="filled" />
+            <Tooltip label="Add" {...tooltipProps}>
+                <FloatingActionIcon {...actionIconProps} style={{ left: "50%", translate: "-50% -100%", position: "absolute" }} color="var(--mantine-primary-color-6)" variant="filled" />
+            </Tooltip>
         </Group>
     )
 }
