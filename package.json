@@ -25,6 +25,7 @@
     "@mantine/form": "^8.1.2",
     "@mantine/hooks": "8.1.2",
     "@supabase/supabase-js": "^2.50.2",
+    "@zxing/browser": "^0.1.5",
     "dayjs": "^1.11.13",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
