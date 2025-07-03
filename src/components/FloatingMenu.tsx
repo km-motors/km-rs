@@ -30,7 +30,7 @@ export const iconProps = {
 const actionIconGroupSectionProps = {
     w: 85,
     h: 50,
-    color: "var(--mantine-primary-color-0)",
+    color: "treansparent",
 }
 
 const tooltipProps = {
@@ -38,7 +38,7 @@ const tooltipProps = {
     closeDelay: 100
 }
 
-enum PAGES {
+export enum PAGES {
     INCOME = "INCOME",
     OUTCOME = "OUTCOME",
     DEBIT = "DEBIT",
@@ -49,7 +49,7 @@ export function FloatingMenu() {
     const isMobile = useMediaQuery('(max-width: 768px)');
     const [currentPage, setCurrentPage] = useLocalStorage({ key: "--current-page", defaultValue: PAGES.INCOME });
     return (
-        <Group style={{ border: "0.05rem solid var(--mantine-primary-color-6)", borderRadius: "var(--mantine-radius-xl)", flexWrap: "nowrap" }} pos="relative" gap={0} px={10} py={3}>
+        <Group style={{ border: "0.05rem solid var(--mantine-primary-color-6)", borderRadius: "var(--mantine-radius-xl)", flexWrap: "nowrap", opacity:0.8 }} pos="relative" gap={0} px={10} py={3} bg="var(--mantine-primary-color-0)">
             <Tooltip label="Income" {...tooltipProps}>
                 <ActionIcon {...actionIconProps} onClick={() => setCurrentPage(PAGES.INCOME)}>
                     {currentPage == PAGES.INCOME ? <IconIncomeFilled  {...iconProps} /> : <IconIncome {...iconProps} />}
