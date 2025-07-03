@@ -66,7 +66,7 @@ export function IncomeList() {
 
   return (
     <>
-      <Stack gap="sm" style={{  marginBottom:"20px", paddingBottom:"50vh"}}>
+      <Stack gap="sm" style={{ marginBottom: "20px", paddingBottom: "50vh" }}>
         {Object.entries(grouped).map(([date, entries], index, array) => {
           const isLast = index === array.length - 1;
           const isFirst = index === 0;
@@ -78,21 +78,26 @@ export function IncomeList() {
               }}
             >
               {/* Sticky Label */}
-              <Text
-                size="sm"
-                fw={700}
+              <Box style={{
+                position: 'sticky',
+                top: 0,
+                backgroundColor: 'var(--mantine-primary-color-0)',
+                paddingBlock: '0.25rem',
+                zIndex: 1,
+                opacity:0.8,
+                borderBottom: "0.1rem solid var(--mantine-primary-color-4)"
+              }}
                 mt={isFirst ? 0 : "md"}
+                mb="md"
                 px="xs"
-                style={{
-                  position: 'sticky',
-                  top: 0,
-                  backgroundColor: 'var(--mantine-color-body)',
-                  paddingBlock: '0.25rem',
-                  zIndex:1
-                }}
               >
-                {date}
-              </Text>
+                <Text
+                  size="sm"
+                  fw={700}
+                >
+                  {date}
+                </Text>
+              </Box>
 
               {/* Cards */}
               <Stack gap="xs" px="xs">
