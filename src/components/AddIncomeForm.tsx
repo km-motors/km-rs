@@ -25,6 +25,7 @@ export type Income = {
 export function AddIncomeForm() {
   const [formLS, setFormLS] = useLocalStorage({ key: "--opened-form", defaultValue: FormsEnum.NONE });
   const [income, setIncome] = useLocalStorage<Income | undefined>({ key: "--income", defaultValue: undefined });
+  const [refreshFlag, setRefreshFlag] = useLocalStorage({ key: '--income-refresh', defaultValue: 0 });
 
   const form = useForm({
     initialValues: {
@@ -56,11 +57,12 @@ export function AddIncomeForm() {
     }
   }, [income]);
 
-  useEffect(()=>{
-    if(success){
+  useEffect(() => {
+    if (success) {
+      setRefreshFlag((f) => f + 1);
       setFormLS(FormsEnum.NONE);
     }
-  },[success]);
+  }, [success]);
 
   const handleSubmit = async (values: typeof form.values) => {
     setError('');

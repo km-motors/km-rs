@@ -29,11 +29,25 @@ export function IncomeList() {
   const [confirmId, setConfirmId] = useState<string | null>(null);
   const [, setFormLS] = useLocalStorage({ key: "--opened-form" });
   const [, setIncome] = useLocalStorage<Income | undefined>({ key: "--income", defaultValue: undefined });
+  const [refreshFlag] = useLocalStorage({ key: '--income-refresh', defaultValue: 0 });
 
   const { ref, entry } = useIntersection({
     root: null,
     threshold: 1,
   });
+
+  useEffect(() => {
+    // Reset everything and reload page 0
+    setPage(0);
+    setHasMore(true);
+    setItems([]);
+  }, [refreshFlag]);
+
+  useEffect(() => {
+    if (page === 0 && !loading) {
+      loadMore(); // Load fresh data
+    }
+  }, [page]);
 
   useEffect(() => {
     loadMore();
