@@ -23,57 +23,57 @@ export type Income = {
 };
 
 export function AddIncomeForm() {
-  const [formLS, setFormLS] = useLocalStorage({ key: "--opened-form", defaultValue: FormsEnum.NONE });
-  const [income, setIncome] = useLocalStorage<Income | undefined>({ key: "--income", defaultValue: undefined });
-  const [, setRefreshFlag] = useLocalStorage({ key: '--income-refresh', defaultValue: 0 });
+  // observer pattern
+  const [openedFrom, setOpenedForm] = useLocalStorage<FormsEnum | undefined>({ key: "--opened-form" });
+  const [editModeIncomeItem, setEditModeIncomeItem] = useLocalStorage<Income | undefined>({ key: "--edit-mode-income-item" });
 
+  // states
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+
+  // form
   const form = useForm({
     initialValues: {
       label: '',
       amount: 0,
       note: '',
-      time_stamp: new Date().toISOString().slice(0, 16),
+      time_stamp: '',
     },
-
     validate: {
       label: (value) => (!value ? 'Label is required' : null),
       amount: (value) => (value <= 0 ? 'Amount must be greater than zero' : null),
     },
   });
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
-
-  // 👇 If editing, load data into form
+  // edit-mode: when income in localstorage
   useEffect(() => {
-    if (income) {
+    if (editModeIncomeItem) {
       form.setValues({
-        label: income?.label,
-        amount: income?.amount,
-        note: income?.note ?? '',
-        time_stamp: income?.time_stamp?.slice(0, 16),
+        label: editModeIncomeItem?.label,
+        amount: editModeIncomeItem?.amount,
+        note: editModeIncomeItem?.note ?? '',
+        time_stamp: editModeIncomeItem?.time_stamp?.slice(0, 16),
       });
     }
-  }, [income]);
+  }, [editModeIncomeItem]);
 
-  // on form open
+  // onOpen
   useEffect(() => {
-    if (formLS == FormsEnum.ADD_INCOME) {
-      if (!income) {
+    if (openedFrom == FormsEnum.ADD_INCOME) {
+      if (!editModeIncomeItem) {
         form.reset();
-        // fill with date.now
         form.setFieldValue('time_stamp', new Date().toISOString().slice(0, 16));
       }
+      // always clear states
       setSuccess(false);
       setError('');
     }
-  }, [formLS])
+  }, [openedFrom]);
 
   useEffect(() => {
     if (success) {
-      setRefreshFlag((f) => f + 1);
-      setFormLS(FormsEnum.NONE);
+      closeForm();
     }
   }, [success]);
 
@@ -93,8 +93,7 @@ export function AddIncomeForm() {
       return;
     }
 
-    if (income) {
-      // ✏️ Update existing income
+    if (editModeIncomeItem) {
       const { error: updateError } = await supabase
         .from('income')
         .update({
@@ -103,12 +102,11 @@ export function AddIncomeForm() {
           note: values.note,
           time_stamp: values.time_stamp,
         })
-        .eq('id', income.id);
+        .eq('id', editModeIncomeItem.id);
 
       if (updateError) setError(updateError.message);
       else setSuccess(true);
     } else {
-      // ➕ Insert new income
       const { error: insertError } = await supabase.from('income').insert([
         {
           user_id: user.id,
@@ -120,23 +118,25 @@ export function AddIncomeForm() {
       ]);
 
       if (insertError) setError(insertError.message);
-      else {
-        setSuccess(true);
-      }
+      else setSuccess(true);
     }
     setLoading(false);
   };
 
   const handelOnClose = () => {
-    setFormLS(FormsEnum.NONE)
-    setIncome(undefined);
+    closeForm();
+    clearIncome();
   }
+
+  // ..
+  const closeForm = () => setOpenedForm(undefined);
+  const clearIncome = () => setEditModeIncomeItem(undefined);
 
   return (
     <Modal
-      opened={formLS == FormsEnum.ADD_INCOME}
+      opened={openedFrom == FormsEnum.ADD_INCOME}
       onClose={handelOnClose}
-      title={income ? 'Edit Income' : 'Add Income'}
+      title={editModeIncomeItem ? 'Edit Income' : 'Add Income'}
     >
       <Box maw={400} mx="auto">
         <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -146,8 +146,8 @@ export function AddIncomeForm() {
             <TextInput label="Date & Time" type="datetime-local" required {...form.getInputProps('time_stamp')} />
             <Textarea label="Note" placeholder="Optional note" autosize minRows={2} {...form.getInputProps('note')} />
             {error && <Alert color="red">{error}</Alert>}
-            {success && <Alert color="green">Income {income ? 'updated' : 'added'} successfully!</Alert>}
-            <Button type="submit" loading={loading}>{income ? 'Save Changes' : 'Add Income'}</Button>
+            {success && <Alert color="green">Income {editModeIncomeItem ? 'updated' : 'added'} successfully!</Alert>}
+            <Button type="submit" loading={loading}>{editModeIncomeItem ? 'Save Changes' : 'Add Income'}</Button>
           </Stack>
         </form>
       </Box>
