@@ -5,17 +5,19 @@ import { ReactComponent as IconOutcome } from "@/icons/trolley.svg?react";
 import { ReactComponent as IconDebit } from "@/icons/clipboard-text.svg?react";
 import { ReactComponent as IconDebitPayment } from "@/icons/receipt.svg?react";
 import { iconProps } from "./FloatingMenu";
-import { useClickOutside, useDisclosure } from "@mantine/hooks";
+import { useClickOutside, useDisclosure, useLocalStorage } from "@mantine/hooks";
+import { FormsEnum } from "./Forms";
 
 const enterDelayactor = 100;
 
 export function FloatingActionIcon(props: ActionIconProps) {
     const [opened, { close, toggle }] = useDisclosure(false);
     const ref = useClickOutside(() => close());
+    const [, setForm] = useLocalStorage({ key: "--opened-form" });
     return (
         <Box ref={ref} style={{ position: "absolute", top: "0%", left: "50%", translate: "-50% -50%" }} w={60} h={60}>
             <Stack style={{ position: "absolute", bottom: "100%", left: "50%", translate: "-50% 0%", pointerEvents: "none" }} mb={20} align="center">
-                <PopupActionIcon mounted={opened} enterDelay={enterDelayactor * 0} Icon={IconIncome} onClick={() => close()} />
+                <PopupActionIcon mounted={opened} enterDelay={enterDelayactor * 0} Icon={IconIncome} onClick={() => {close(); setForm(FormsEnum.ADD_INCOME);}} />
                 <PopupActionIcon mounted={opened} enterDelay={enterDelayactor * 1} Icon={IconOutcome} onClick={() => close()} />
                 <PopupActionIcon mounted={opened} enterDelay={enterDelayactor * 2} Icon={IconDebit} onClick={() => close()} />
                 <PopupActionIcon mounted={opened} enterDelay={enterDelayactor * 3} Icon={IconDebitPayment} onClick={() => close()} />
