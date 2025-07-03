@@ -56,6 +56,12 @@ export function AddIncomeForm() {
     }
   }, [income]);
 
+  useEffect(()=>{
+    if(success){
+      setFormLS(FormsEnum.NONE);
+    }
+  },[success]);
+
   const handleSubmit = async (values: typeof form.values) => {
     setError('');
     setSuccess(false);
@@ -112,6 +118,9 @@ export function AddIncomeForm() {
   const handelOnClose = () => {
     setFormLS(FormsEnum.NONE)
     setIncome(undefined);
+    form.reset();
+    // fill with date.now
+    form.setFieldValue('time_stamp', new Date().toISOString().slice(0, 16));
   }
 
   return (
