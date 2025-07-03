@@ -27,7 +27,7 @@ export async function getIncome() {
   return data;
 }
 
-export async function fetchIncomePaginated(page: number, pageSize = 20) {
+export async function fetchIncomePaginated(page: number, pageSize = 10) {
   const from = page * pageSize;
   const to = from + pageSize - 1;
 
@@ -39,4 +39,9 @@ export async function fetchIncomePaginated(page: number, pageSize = 20) {
 
   if (error) throw error;
   return data;
+}
+
+export async function deleteIncomeById(id: string) {
+  const { error } = await supabase.from('income').delete().eq('id', id);
+  if (error) throw error;
 }
