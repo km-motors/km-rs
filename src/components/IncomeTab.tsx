@@ -63,7 +63,11 @@ export function IncomeList() {
     setLoading(true);
     const newItems = await fetchIncomePaginated(page);
     if (newItems.length === 0) setHasMore(false);
-    setItems((prev) => [...prev, ...newItems]);
+    setItems((prev) => {
+      const existingIds = new Set(prev.map((item) => item.id));
+      const uniqueNewItems = newItems.filter((item) => !existingIds.has(item.id));
+      return [...prev, ...uniqueNewItems];
+    });
     setPage((p) => p + 1);
     setLoading(false);
   }

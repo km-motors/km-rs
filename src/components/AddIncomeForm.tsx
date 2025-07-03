@@ -25,7 +25,7 @@ export type Income = {
 export function AddIncomeForm() {
   const [formLS, setFormLS] = useLocalStorage({ key: "--opened-form", defaultValue: FormsEnum.NONE });
   const [income, setIncome] = useLocalStorage<Income | undefined>({ key: "--income", defaultValue: undefined });
-  const [refreshFlag, setRefreshFlag] = useLocalStorage({ key: '--income-refresh', defaultValue: 0 });
+  const [, setRefreshFlag] = useLocalStorage({ key: '--income-refresh', defaultValue: 0 });
 
   const form = useForm({
     initialValues: {
@@ -56,6 +56,19 @@ export function AddIncomeForm() {
       });
     }
   }, [income]);
+
+  // on form open
+  useEffect(() => {
+    if (formLS == FormsEnum.ADD_INCOME) {
+      if (!income) {
+        form.reset();
+        // fill with date.now
+        form.setFieldValue('time_stamp', new Date().toISOString().slice(0, 16));
+      }
+      setSuccess(false);
+      setError('');
+    }
+  }, [formLS])
 
   useEffect(() => {
     if (success) {
@@ -109,25 +122,19 @@ export function AddIncomeForm() {
       if (insertError) setError(insertError.message);
       else {
         setSuccess(true);
-        form.reset();
-        form.setFieldValue('time_stamp', new Date().toISOString().slice(0, 16));
       }
     }
-
     setLoading(false);
   };
 
   const handelOnClose = () => {
     setFormLS(FormsEnum.NONE)
     setIncome(undefined);
-    form.reset();
-    // fill with date.now
-    form.setFieldValue('time_stamp', new Date().toISOString().slice(0, 16));
   }
 
   return (
     <Modal
-      opened={formLS !== FormsEnum.NONE}
+      opened={formLS == FormsEnum.ADD_INCOME}
       onClose={handelOnClose}
       title={income ? 'Edit Income' : 'Add Income'}
     >
