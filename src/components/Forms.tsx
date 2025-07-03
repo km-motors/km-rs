@@ -1,5 +1,5 @@
 import { useLocalStorage } from "@mantine/hooks"
-import { AddIncomeForm } from "./AddIncomeForm";
+import { FormIncome } from "./FormIncome";
 import { Box, Modal } from "@mantine/core";
 
 export enum FormsEnum {
@@ -14,7 +14,7 @@ export function Forms() {
     const [form, setForm] = useLocalStorage({ key: "--opened-form", defaultValue: FormsEnum.NONE });
     return (
         <>
-            <AddIncomeForm />
+            <FormIncome />
         </>
     )
 }

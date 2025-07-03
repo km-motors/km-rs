@@ -15,7 +15,7 @@ import { FormsEnum } from './Forms';
 import { useLocalStorage } from '@mantine/hooks';
 import { Income, useIncome } from '@/context/IncomeContext';
 
-export function AddIncomeForm() {
+export function FormIncome() {
   // context
   const { items, setItems } = useIncome();
 

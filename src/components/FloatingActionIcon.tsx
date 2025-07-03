@@ -7,7 +7,7 @@ import { ReactComponent as IconDebitPayment } from "@/icons/receipt.svg?react";
 import { iconProps } from "./FloatingMenu";
 import { useClickOutside, useDisclosure, useLocalStorage } from "@mantine/hooks";
 import { FormsEnum } from "./Forms";
-import { Income } from "./AddIncomeForm";
+import { Income } from "./FormIncome";
 
 const enterDelayactor = 100;
 
