@@ -11,15 +11,15 @@ export function HomePage() {
   const [currentPage] = useLocalStorage({ key: "--current-page" });
 
   return (
-    <Stack w="100vw" h="100vh" bg={"var(--mantine-primary-color-0)"} pb="xl" px="0" pt="0" gap="0">
+    <Stack w="100vw" h="100vh" bg={"var(--mantine-primary-color-0)"} gap="0">
       <Group justify="space-between">
         <OptionsMenu />
         <UserMenu />
       </Group>
-      <Box className='data-block' flex={1} style={{ overflow: "scroll", borderTop: "1px solid #bbb" }}>
+      <Box className='data-block' flex={1} style={{ overflow: "scroll", borderTop: "0.1rem solid var(--mantine-primary-color-4)" }}>
         {currentPage == PAGES.INCOME && <IncomeList />}
       </Box>
-      <Center style={{ position: "fixed", bottom: "0", left: "50%", translate: "-50% 0" }} mb={"lg"}>
+      <Center style={{ position: "fixed", bottom: "0", left: "50%", translate: "-50% 0", zIndex:2 }} mb={"lg"}>
         <FloatingMenu />
       </Center>
       <Forms />
