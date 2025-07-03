@@ -10,7 +10,7 @@ import { useClickOutside, useDisclosure } from "@mantine/hooks";
 const enterDelayactor = 100;
 
 export function FloatingActionIcon(props: ActionIconProps) {
-    const [opened, { close, toggle }] = useDisclosure(true);
+    const [opened, { close, toggle }] = useDisclosure(false);
     const ref = useClickOutside(() => close());
     return (
         <Box ref={ref} style={{ position: "absolute", top: "0%", left: "50%", translate: "-50% -50%" }} w={60} h={60}>
