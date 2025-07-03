@@ -72,9 +72,7 @@ export function FloatingMenu() {
                 </ActionIcon>
             </Tooltip>
             {/* postion:absolute */}
-            <Tooltip label="Add" {...tooltipProps}>
-                <FloatingActionIcon {...actionIconProps} style={{ left: "50%", translate: "-50% -100%", position: "absolute" }} color="var(--mantine-primary-color-6)" variant="filled" />
-            </Tooltip>
+            <FloatingActionIcon {...actionIconProps} color="var(--mantine-primary-color-6)" variant="filled" />
         </Group>
     )
 }
