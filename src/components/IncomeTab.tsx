@@ -20,35 +20,28 @@ import { fetchIncomePaginated, deleteIncomeById } from '@/api/income';
 import { groupByDate } from '@/utils/groupByDate';
 import { FormsEnum } from './Forms';
 import { Income } from './AddIncomeForm';
+import { useIncome } from '@/context/IncomeContext';
 
 export function IncomeList() {
-  const [items, setItems] = useState<any[]>([]);
+  // observer pattern
+  const [, setOpenedForm] = useLocalStorage<FormsEnum | undefined>({ key: "--opened-form" });
+  const [, setEditModeIncomeItem] = useLocalStorage<Income | undefined>({ key: "--edit-mode-income-item" });
+
+  // context
+  const { items, setItems } = useIncome();
+
+  // hooks
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [confirmId, setConfirmId] = useState<string | null>(null);
-  const [, setFormLS] = useLocalStorage({ key: "--opened-form" });
-  const [, setIncome] = useLocalStorage<Income | undefined>({ key: "--income", defaultValue: undefined });
-  const [refreshFlag] = useLocalStorage({ key: '--income-refresh', defaultValue: 0 });
 
   const { ref, entry } = useIntersection({
     root: null,
     threshold: 1,
   });
 
-  useEffect(() => {
-    // Reset everything and reload page 0
-    setPage(0);
-    setHasMore(true);
-    setItems([]);
-  }, [refreshFlag]);
-
-  useEffect(() => {
-    if (page === 0 && !loading) {
-      loadMore(); // Load fresh data
-    }
-  }, [page]);
-
+  // init
   useEffect(() => {
     loadMore();
   }, []);
@@ -63,6 +56,7 @@ export function IncomeList() {
     setLoading(true);
     const newItems = await fetchIncomePaginated(page);
     if (newItems.length === 0) setHasMore(false);
+    // avoid repeating items
     setItems((prev) => {
       const existingIds = new Set(prev.map((item) => item.id));
       const uniqueNewItems = newItems.filter((item) => !existingIds.has(item.id));
@@ -74,23 +68,26 @@ export function IncomeList() {
 
   async function handleDelete(id: string) {
     await deleteIncomeById(id);
-    setItems((prev) => prev.filter((item) => item.id !== id));
+    setItems((prev) => prev.filter((item) => item.id !== id)); // update ui without fetching
     setConfirmId(null);
   }
 
   function handleEdit(item: Income) {
-    setIncome(item);
-    setFormLS(FormsEnum.ADD_INCOME);
+    setEditModeIncomeItem(item);
+    openIncomeItemForm();
   }
 
   const grouped = groupByDate(items);
+
+  // ..
+  const openIncomeItemForm = () => setOpenedForm(FormsEnum.ADD_INCOME);
 
   return (
     <>
       <Stack gap="sm" style={{ marginBottom: "20px", paddingBottom: "50vh" }}>
         {Object.entries(grouped).map(([date, entries], index, array) => {
-          const isLast = index === array.length - 1;
           const isFirst = index === 0;
+          const isLast = index === array.length - 1;
           return (
             <div
               key={date}
