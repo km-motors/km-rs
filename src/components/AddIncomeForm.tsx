@@ -13,16 +13,12 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { FormsEnum } from './Forms';
 import { useLocalStorage } from '@mantine/hooks';
-
-export type Income = {
-  id: string;
-  label: string;
-  amount: number;
-  note?: string;
-  time_stamp: string;
-};
+import { Income, useIncome } from '@/context/IncomeContext';
 
 export function AddIncomeForm() {
+  // context
+  const { items, setItems } = useIncome();
+
   // observer pattern
   const [openedFrom, setOpenedForm] = useLocalStorage<FormsEnum | undefined>({ key: "--opened-form" });
   const [editModeIncomeItem, setEditModeIncomeItem] = useLocalStorage<Income | undefined>({ key: "--edit-mode-income-item" });
@@ -104,21 +100,39 @@ export function AddIncomeForm() {
         })
         .eq('id', editModeIncomeItem.id);
 
-      if (updateError) setError(updateError.message);
-      else setSuccess(true);
+      if (updateError) {
+        setError(updateError.message);
+      } else {
+        setItems((prev) =>
+          prev.map((item) =>
+            item.id === editModeIncomeItem.id
+              ? { ...item, ...values }
+              : item
+          )
+        );
+        setSuccess(true)
+      };
     } else {
-      const { error: insertError } = await supabase.from('income').insert([
-        {
-          user_id: user.id,
-          label: values.label,
-          amount: values.amount,
-          note: values.note,
-          time_stamp: values.time_stamp,
-        },
-      ]);
+      const { data: insertedIncome, error: insertError } = await supabase
+        .from('income')
+        .insert([
+          {
+            user_id: user.id,
+            label: values.label,
+            amount: values.amount,
+            note: values.note,
+            time_stamp: values.time_stamp,
+          },
+        ])
+        .select()
+        .single();
 
-      if (insertError) setError(insertError.message);
-      else setSuccess(true);
+      if (insertError) {
+        setError(insertError.message);
+      } else {
+        setItems((prev) => [insertedIncome, ...prev]);
+        setSuccess(true);
+      }
     }
     setLoading(false);
   };

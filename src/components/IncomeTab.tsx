@@ -19,8 +19,7 @@ import { useEffect, useState } from 'react';
 import { fetchIncomePaginated, deleteIncomeById } from '@/api/income';
 import { groupByDate } from '@/utils/groupByDate';
 import { FormsEnum } from './Forms';
-import { Income } from './AddIncomeForm';
-import { useIncome } from '@/context/IncomeContext';
+import { Income, useIncome } from '@/context/IncomeContext';
 
 export function IncomeList() {
   // observer pattern
