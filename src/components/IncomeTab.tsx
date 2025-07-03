@@ -14,10 +14,12 @@ import {
 import { ReactComponent as IconEdit } from "@/icons/align-left.svg?react";
 import { ReactComponent as IconTrash } from "@/icons/align-left.svg?react";
 
-import { useIntersection } from '@mantine/hooks';
+import { useIntersection, useLocalStorage } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import { fetchIncomePaginated, deleteIncomeById } from '@/api/income';
 import { groupByDate } from '@/utils/groupByDate';
+import { FormsEnum } from './Forms';
+import { Income } from './AddIncomeForm';
 
 export function IncomeList() {
   const [items, setItems] = useState<any[]>([]);
@@ -25,6 +27,8 @@ export function IncomeList() {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [confirmId, setConfirmId] = useState<string | null>(null);
+  const [, setFormLS] = useLocalStorage({ key: "--opened-form" });
+  const [, setIncome] = useLocalStorage<Income | undefined>({ key: "--income", defaultValue: undefined });
 
   const { ref, entry } = useIntersection({
     root: null,
@@ -36,7 +40,6 @@ export function IncomeList() {
   }, []);
 
   useEffect(() => {
-    console.log('entry changed:', entry);
     if (entry?.isIntersecting && hasMore && !loading) {
       loadMore();
     }
@@ -57,9 +60,9 @@ export function IncomeList() {
     setConfirmId(null);
   }
 
-  function handleEdit(item: any) {
-    // Replace this with real edit logic (modal, form, etc.)
-    console.log('Edit item:', item);
+  function handleEdit(item: Income) {
+    setIncome(item);
+    setFormLS(FormsEnum.ADD_INCOME);
   }
 
   const grouped = groupByDate(items);
@@ -84,7 +87,7 @@ export function IncomeList() {
                 backgroundColor: 'var(--mantine-primary-color-0)',
                 paddingBlock: '0.25rem',
                 zIndex: 1,
-                opacity:0.8,
+                opacity: 0.8,
                 borderBottom: "0.1rem solid var(--mantine-primary-color-4)"
               }}
                 mt={isFirst ? 0 : "md"}
