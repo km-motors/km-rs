@@ -4,11 +4,9 @@ import {
   Card,
   Flex,
   ActionIcon,
-  Divider,
   Loader,
   Modal,
   Button,
-  rem,
   Box,
 } from '@mantine/core';
 import { ReactComponent as IconEdit } from "@/icons/align-left.svg?react";

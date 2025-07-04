@@ -1,10 +1,10 @@
 import { Box, Stack, Center, Group } from '@mantine/core';
 
 import { FloatingMenu, PAGES } from '@/components/FloatingMenu';
-import { OptionsMenu } from '@/components/OptinsMenu';
-import { UserMenu } from '@/components/UserMenu';
+import { OptionsMenu } from '@/components/OptionsMenu';
+import { UserMenu } from '@/components/MenuUser';
 import { Forms } from '@/components/Forms';
-import { IncomeList } from '@/components/IncomeTab';
+import { IncomeList } from '@/components/TabIncome';
 import { useLocalStorage } from '@mantine/hooks';
 
 export function HomePage() {

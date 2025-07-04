@@ -1,5 +1,5 @@
 import { Box, Center, Stack, Title } from '@mantine/core';
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/FormLogin';
 import { useMediaQuery } from '@mantine/hooks';
 
 export default function LoginPage() {
