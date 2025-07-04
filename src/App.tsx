@@ -6,13 +6,16 @@ import { Router } from './Router';
 import { theme } from './theme';
 import { DatesProvider } from '@mantine/dates';
 import { IncomeProvider } from './context/IncomeContext';
+import { OutcomeProvider } from './context/OutcomeContext';
 
 export default function App() {
   return (
     <MantineProvider theme={theme}>
       <DatesProvider settings={{ locale: 'en', firstDayOfWeek: 0 }}>
         <IncomeProvider>
-          <Router />
+          <OutcomeProvider>
+            <Router />
+          </OutcomeProvider>
         </IncomeProvider>
       </DatesProvider>
     </MantineProvider>

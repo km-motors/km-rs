@@ -1,6 +1,7 @@
 import { useLocalStorage } from "@mantine/hooks"
 import { FormIncome } from "./FormIncome";
 import { PAGES } from "./FloatingMenu";
+import { FormOutcome } from "./FormOutcome";
 
 export enum FormsEnum {
     NONE = "none",
@@ -15,6 +16,7 @@ export function Forms() {
     return (
         <>
             <FormIncome />
+            <FormOutcome />
         </>
     )
 }
