@@ -3,7 +3,6 @@ import { HomePage } from './pages/Home.page';
 import LoginPage from './pages/Login.page';
 import { JSX, useEffect, useState } from 'react';
 import { supabase } from './lib/supabaseClient';
-import VinPage from './pages/Vin.page';
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
   const [loading, setLoading] = useState(true);
@@ -34,14 +33,6 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
-  {
-    path: '/vin',
-    element: (
-      <ProtectedRoute>
-        <VinPage />
-      </ProtectedRoute>
-    ),
-  }
 ]);
 
 export function Router() {
