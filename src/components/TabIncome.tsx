@@ -31,6 +31,8 @@ export function IncomeList() {
   const [, setEditModeIncomeItem] = useLocalStorage<Income | undefined>({ key: "--edit-mode-income-item", defaultValue: undefined });
   const [, setDate] = useLocalStorage<string>({ key: "--income-report-date", defaultValue: new Date().toISOString().slice(0, 16) });
   const [, setRangeType] = useLocalStorage<ReportRangeTypeEnum>({ key: "--income-report-range-type", defaultValue: ReportRangeTypeEnum.DAY });
+  const [, setAutoFetchOnStartup] = useLocalStorage<boolean>({ key: "--income-report-auto-fetch-on-start-up", defaultValue: false });
+
 
   // context
   const { items, setItems } = useIncome();
@@ -90,7 +92,7 @@ export function IncomeList() {
   return (
     <>
       <Stack gap="sm" style={{ marginBottom: "20px", paddingBottom: "50vh" }}>
-        {grouped.map(({ label:date, rawDate, entries }, index, array) => {
+        {grouped.map(({ label: date, rawDate, entries }, index, array) => {
           const isFirst = index === 0;
           const isLast = index === array.length - 1;
           return (
@@ -123,6 +125,7 @@ export function IncomeList() {
                   {date}
                 </Text>
                 <ActionIcon variant="transparent" onClick={() => {
+                  setAutoFetchOnStartup(true);
                   setDate(rawDate.slice(0, 16));
                   setRangeType(ReportRangeTypeEnum.DAY);
                   setOpenedForm(FormsEnum.INCOME_REPORT);

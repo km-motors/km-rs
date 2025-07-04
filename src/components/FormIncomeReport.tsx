@@ -24,12 +24,14 @@ export enum ReportRangeTypeEnum {
 export function IncomeReportForm() {
     const [date, setDate] = useLocalStorage<string>({ key: "--income-report-date", defaultValue: new Date().toISOString().slice(0, 16) });
     const [rangeType, setRangeType] = useLocalStorage<ReportRangeTypeEnum>({ key: "--income-report-range-type", defaultValue: ReportRangeTypeEnum.DAY });
+    const [autoFetchOnStartup, setAutoFetchOnStartup] = useLocalStorage<boolean>({ key: "--income-report-auto-fetch-on-start-up", defaultValue: false });
 
     const [loading, setLoading] = useState(false);
     const [report, setReport] = useState<any[] | null>(null);
     const [error, setError] = useState('');
 
     const handleFetch = async () => {
+        setAutoFetchOnStartup(false);
         if (!date) return;
 
         setLoading(true);
@@ -50,6 +52,11 @@ export function IncomeReportForm() {
     // Calculate total amount if report exists
     const total = report?.reduce((acc, item) => acc + Number(item.amount), 0) ?? 0;
 
+    useEffect(() => {
+        if (autoFetchOnStartup) {
+            handleFetch();
+        }
+    }, [autoFetchOnStartup]);
     return (
         <Box maw={400} mx="auto">
             <Stack>
