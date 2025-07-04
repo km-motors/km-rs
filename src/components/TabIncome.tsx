@@ -8,6 +8,9 @@ import {
   Modal,
   Button,
   Box,
+  Divider,
+  Group,
+  Pill,
 } from '@mantine/core';
 import { ReactComponent as IconEdit } from "@/icons/align-left.svg?react";
 import { ReactComponent as IconTrash } from "@/icons/align-left.svg?react";
@@ -18,6 +21,7 @@ import { fetchIncomePaginated, deleteIncomeById } from '@/api/income';
 import { groupByDate } from '@/utils/groupByDate';
 import { FormsEnum } from './Forms';
 import { Income, useIncome } from '@/context/IncomeContext';
+import dayjs from 'dayjs';
 
 export function IncomeList() {
   // observer pattern
@@ -115,29 +119,39 @@ export function IncomeList() {
               </Box>
 
               {/* Cards */}
-              <Stack gap="xs" px="xs">
-                {entries.map((item) => (
-                  <Card key={item.id} shadow="sm" radius="md" padding="sm" withBorder>
+              <Stack gap="md" px="xs">
+                {entries.map((item: Income) => (
+                  <Card key={item.id} shadow="sm" radius="lg" padding="sm" withBorder style={{ overflow: "visible", border:"1px solid var(--mantine-primary-color-1)" }}>
+                    <Pill fw={500} style={{ translate: "0% -50%", border:"1px solid var(--mantine-primary-color-1)" }} pos={"absolute"} top={0} right={0} mr={"sm"} px={"md"}>{dayjs(item.time_stamp).format('hh:mm A')}</Pill>
                     <Flex justify="space-between" align="center">
-                      <div>
-                        <Text fw={500}>{item.label}</Text>
+                      <Stack gap={0}>
+                        <Group>
+                          <Text fw={500}>{item.label}</Text>
+                        </Group>
+
                         <Text size="sm" c="dimmed">
                           ${item.amount.toFixed(2)}
                         </Text>
-                      </div>
+                      </Stack>
                       <Flex gap="xs">
                         <ActionIcon variant="light" onClick={() => handleEdit(item)}>
                           <IconEdit width={18} height={18} />
                         </ActionIcon>
-                        <ActionIcon
-                          variant="light"
-                          color="red"
-                          onClick={() => setConfirmId(item.id)}
-                        >
+                        <ActionIcon variant="light" color="red" onClick={() => setConfirmId(item.id)}>
                           <IconTrash width={18} height={18} />
                         </ActionIcon>
                       </Flex>
                     </Flex>
+                    {
+                      item.note &&
+                      <Box pt={"xs"}>
+                        <Divider pb={"xs"} color='var(--mantine-primary-color-9)' size="xs" opacity={.2} />
+                        <Flex c={"var(--mantine-primary-color-9)"} opacity={.5}>
+                          {item.note}
+                        </Flex>
+                      </Box>
+
+                    }
                   </Card>
                 ))}
               </Stack>
