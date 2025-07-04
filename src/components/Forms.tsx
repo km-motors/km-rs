@@ -3,6 +3,7 @@ import { FormIncome } from "./FormIncome";
 import { PAGES } from "./FloatingMenu";
 import { FormOutcome } from "./FormOutcome";
 import { FormVIN } from "./FormVIN";
+import { FromIncomeReport } from "./FormIncomeReport";
 
 export enum FormsEnum {
     NONE = "none",
@@ -11,6 +12,7 @@ export enum FormsEnum {
     ADD_DEBIT = "add-debit",
     ADD_DEBIT_PAYMENT = "add-debit-payment",
     VIN = "vin",
+    INCOME_REPORT = "income-report",
 }
 
 export function Forms() {
@@ -20,6 +22,7 @@ export function Forms() {
             <FormIncome />
             <FormOutcome />
             <FormVIN />
+            <FromIncomeReport />
         </>
     )
 }

@@ -14,6 +14,7 @@ import {
 } from '@mantine/core';
 import { ReactComponent as IconEdit } from "@/icons/align-left.svg?react";
 import { ReactComponent as IconTrash } from "@/icons/align-left.svg?react";
+import { ReactComponent as IconSum } from "@/icons/sum.svg?react";
 
 import { useIntersection, useLocalStorage } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
@@ -22,11 +23,14 @@ import { groupByDate } from '@/utils/groupByDate';
 import { FormsEnum } from './Forms';
 import { Income, useIncome } from '@/context/IncomeContext';
 import dayjs from 'dayjs';
+import { ReportRangeTypeEnum } from './FormIncomeReport';
 
 export function IncomeList() {
   // observer pattern
   const [, setOpenedForm] = useLocalStorage<FormsEnum | undefined>({ key: "--opened-form", defaultValue: undefined });
   const [, setEditModeIncomeItem] = useLocalStorage<Income | undefined>({ key: "--edit-mode-income-item", defaultValue: undefined });
+  const [, setDate] = useLocalStorage<string>({ key: "--income-report-date", defaultValue: new Date().toISOString().slice(0, 16) });
+  const [, setRangeType] = useLocalStorage<ReportRangeTypeEnum>({ key: "--income-report-range-type", defaultValue: ReportRangeTypeEnum.DAY });
 
   // context
   const { items, setItems } = useIncome();
@@ -86,7 +90,7 @@ export function IncomeList() {
   return (
     <>
       <Stack gap="sm" style={{ marginBottom: "20px", paddingBottom: "50vh" }}>
-        {Object.entries(grouped).map(([date, entries], index, array) => {
+        {grouped.map(({ label:date, rawDate, entries }, index, array) => {
           const isFirst = index === 0;
           const isLast = index === array.length - 1;
           return (
@@ -97,7 +101,7 @@ export function IncomeList() {
               }}
             >
               {/* Sticky Label */}
-              <Box style={{
+              <Group style={{
                 position: 'sticky',
                 top: 0,
                 backgroundColor: 'var(--mantine-primary-color-0)',
@@ -109,6 +113,7 @@ export function IncomeList() {
                 mt={isFirst ? 0 : "md"}
                 mb="md"
                 px="xs"
+                justify="space-between"
               >
                 <Text
                   size="sm"
@@ -117,7 +122,14 @@ export function IncomeList() {
                 >
                   {date}
                 </Text>
-              </Box>
+                <ActionIcon variant="transparent" onClick={() => {
+                  setDate(rawDate.slice(0, 16));
+                  setRangeType(ReportRangeTypeEnum.DAY);
+                  setOpenedForm(FormsEnum.INCOME_REPORT);
+                }}>
+                  <IconSum />
+                </ActionIcon>
+              </Group>
 
               {/* Cards */}
               <Stack gap="md" px="xs">

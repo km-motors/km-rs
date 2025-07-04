@@ -1,18 +1,25 @@
 import dayjs from 'dayjs';
 
 export function groupByDate(items: any[]) {
-    const groups: Record<string, any[]> = {};
+    const groupMap = new Map<string, { label: string; rawDate: string; entries: any[] }>();
 
     for (const item of items) {
         const date = dayjs(item.time_stamp);
-        const key =
-            date.isSame(dayjs(), 'day') ? 'Today'
-                : date.isSame(dayjs().subtract(1, 'day'), 'day') ? 'Yesterday'
+        const rawDate = item.time_stamp; // for raw usage
+        const label =
+            date.isSame(dayjs(), 'day')
+                ? 'Today'
+                : date.isSame(dayjs().subtract(1, 'day'), 'day')
+                    ? 'Yesterday'
                     : date.format(date.year() === dayjs().year() ? 'MM/DD' : 'YYYY/MM/DD');
 
-        if (!groups[key]) groups[key] = [];
-        groups[key].push(item);
+        if (!groupMap.has(label)) {
+            groupMap.set(label, { label, rawDate, entries: [] });
+        }
+
+        groupMap.get(label)!.entries.push(item);
     }
 
-    return groups;
+    return Array.from(groupMap.values());
 }
+

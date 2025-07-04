@@ -45,3 +45,15 @@ export async function deleteIncomeById(id: string) {
   const { error } = await supabase.from('income').delete().eq('id', id);
   if (error) throw error;
 }
+
+export async function fetchIncomeByRange(from: string, to: string) {
+  const { data, error } = await supabase
+    .from('income')
+    .select('*')
+    .gte('time_stamp', from)
+    .lte('time_stamp', to)
+    .order('time_stamp', { ascending: false });
+
+  if (error) throw error;
+  return data;
+}
