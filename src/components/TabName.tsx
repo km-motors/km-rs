@@ -1,0 +1,30 @@
+import { Text, TextProps } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
+import { useEffect, useState } from "react";
+import { PAGES } from "./FloatingMenu";
+
+export function TabName(props: TextProps) {
+    const [currentPage] = useLocalStorage({ key: "--current-page" });
+    const [tabName, setTabName] = useState<string>('');
+    useEffect(() => {
+        switch (currentPage) {
+            case PAGES.INCOME:
+                setTabName("income")
+                break;
+            case PAGES.OUTCOME:
+                setTabName("outcome")
+                break;
+            case PAGES.DEBIT:
+                setTabName("debit")
+                break;
+            case PAGES.PAYMENT:
+                setTabName("debit payment")
+                break;
+            default:
+                break;
+        }
+    }, [currentPage])
+    return (
+        <Text {...props}>{tabName}</Text>
+    )
+}

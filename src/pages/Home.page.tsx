@@ -6,6 +6,7 @@ import { UserMenu } from '@/components/MenuUser';
 import { Forms } from '@/components/Forms';
 import { IncomeList } from '@/components/TabIncome';
 import { useLocalStorage } from '@mantine/hooks';
+import { TabName } from '@/components/TabName';
 
 export function HomePage() {
   const [currentPage] = useLocalStorage({ key: "--current-page" });
@@ -13,13 +14,16 @@ export function HomePage() {
   return (
     <Stack w="100vw" h="100vh" bg={"var(--mantine-primary-color-0)"} gap="0">
       <Group justify="space-between">
-        <OptionsMenu />
+        <Group gap='xs'>
+          <OptionsMenu />
+          <TabName style={{ textTransform: "capitalize" }} fz={"h3"} c={"var(--mantine-primary-color-6)"} pt={2}/>
+        </Group>
         <UserMenu />
       </Group>
       <Box className='data-block' flex={1} style={{ overflow: "scroll", borderTop: "0.1rem solid var(--mantine-primary-color-4)" }}>
         {currentPage == PAGES.INCOME && <IncomeList />}
       </Box>
-      <Center style={{ position: "fixed", bottom: "0", left: "50%", translate: "-50% 0", zIndex:2 }} mb={"lg"}>
+      <Center style={{ position: "fixed", bottom: "0", left: "50%", translate: "-50% 0", zIndex: 2 }} mb={"lg"}>
         <FloatingMenu />
       </Center>
       <Forms />
