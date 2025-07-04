@@ -1,5 +1,6 @@
-import { Paper, Grid, Text, Title, Stack, Divider, Button, Modal, TextInput } from '@mantine/core';
+import { Paper, Grid, Text, Title, Stack, Divider, Button, Modal, TextInput, Alert, Group } from '@mantine/core';
 import { ReactComponent as ManualIcon } from '@/icons/forms.svg?react';
+import { ReactComponent as InfoIcon } from '@/icons/info-circle.svg?react';
 import { decodeVin } from '@/utils/vinApi';
 import { useEffect, useState } from 'react';
 import { FormsEnum } from './Forms';
@@ -98,18 +99,25 @@ export function FormVIN() {
     const [opened, setOpened] = useState(false);
     const [vin, setVin] = useState('');
     const [result, setResult] = useState<any | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     const handleDetected = async (vin: string) => {
+        setError('');
+        setLoading(true);
         try {
             const data = await decodeVin(vin);
             setResult(data);
         } catch (e) {
-            alert('Failed to decode VIN');
+            setError('Failed to decode VIN');
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleSubmit = () => {
         if (vin.length === 17) handleDetected(vin);
+        else setError("VIN must be 17 characters");
     };
 
     const handelOnClose = () => {
@@ -139,16 +147,31 @@ export function FormVIN() {
         >
             <Stack gap="xs">
                 <TextInput
-                    label="Enter VIN manually"
+                    label="Enter Vehicle VIN"
                     placeholder="17-character VIN"
                     value={vin}
                     onChange={(e) => setVin(e.currentTarget.value.toUpperCase())}
+                    error={vin.length > 0 && vin.length !== 17 ? 'VIN must be 17 characters' : false}
+                    radius={"sm"}
                 />
-                <Button leftSection={<ManualIcon />} onClick={handleSubmit}>
+                <Button
+                    leftSection={<ManualIcon />}
+                    onClick={handleSubmit}
+                    disabled={vin.length !== 17}
+                    loading={loading}
+                >
                     Submit VIN
                 </Button>
             </Stack>
-            {result && <VinResultForm data={result}/>}
+            {error &&
+                <Alert color="red" mt={"lg"} styles={{ message: { color: "var(--mantine-color-red-9)" } }} variant="light" style={{ color: "red" }} radius={"lg"}>
+                    <Group gap={6}>
+                        <InfoIcon strokeWidth={1.2}/>
+                        {error}
+                    </Group>
+                </Alert>
+            }
+            {result && <VinResultForm data={result} />}
         </Modal>
     )
 }
