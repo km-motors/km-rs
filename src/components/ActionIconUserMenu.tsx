@@ -1,11 +1,11 @@
-import { ActionIcon, Menu } from "@mantine/core";
+import { ActionIcon, ActionIconProps, Menu } from "@mantine/core";
 import { iconProps } from "./FloatingMenu";
 import { ReactComponent as IconUser } from "@/icons/user(1).svg?react";
 import { ReactComponent as IconLogout } from "@/icons/logout.svg?react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
 
-export function UserMenu() {
+export function ActionIconUserMenu(props: ActionIconProps) {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -15,8 +15,8 @@ export function UserMenu() {
     return (
         <Menu shadow="md" width={200}>
             <Menu.Target>
-                <ActionIcon variant="transparent" size={60}>
-                    <IconUser {...iconProps} style={{ strokeWidth: 1.5 }} />
+                <ActionIcon {...props}>
+                    <IconUser />
                 </ActionIcon>
             </Menu.Target>
             <Menu.Dropdown>

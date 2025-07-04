@@ -11,6 +11,7 @@ import { ReactComponent as IconDebitPayment } from "@/icons/receipt.svg?react";
 import { ReactComponent as IconDebitPaymentFilled } from "@/icons/receipt(1).svg?react";
 // - icons
 import { FloatingActionIcon } from "./FloatingActionIcon";
+import { SVGProps } from "react";
 
 const actionIconProps = {
     size: 60,
@@ -20,12 +21,12 @@ const actionIconProps = {
     style: {} as CSSProperties,
 } as ActionIconProps;
 
-export const iconProps = {
-    color: "var(--mantine-primary-color-6)",
-    style: { strokeWidth: "1" } as CSSProperties,
-    width: 30,
-    height: 30
-}
+export const iconProps: SVGProps<SVGSVGElement> = {
+  color: 'var(--mantine-primary-color-6)',
+  strokeWidth: 1,
+  width: 30,
+  height: 30,
+};
 
 const actionIconGroupSectionProps = {
     w: 85,
