@@ -3,7 +3,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { PAGES } from "./FloatingMenu";
 
-export function TabName(props: TextProps) {
+export function LabelTabName(props: TextProps) {
     const [currentPage] = useLocalStorage({ key: "--current-page", defaultValue:PAGES.INCOME });
     const [tabName, setTabName] = useState<string>('');
     useEffect(() => {

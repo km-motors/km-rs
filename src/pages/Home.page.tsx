@@ -6,7 +6,7 @@ import { ActionIconUserMenu } from '@/components/ActionIconUserMenu';
 import { Forms } from '@/components/Forms';
 import { IncomeList } from '@/components/TabIncome';
 import { useLocalStorage } from '@mantine/hooks';
-import { TabName } from '@/components/TabName';
+import { LabelTabName } from '@/components/LabelTabName';
 import { ActionIconVinPage } from '@/components/ActionIconVinPage';
 import { OutcomeList } from '@/components/TabOutcome';
 
@@ -19,7 +19,7 @@ export function HomePage() {
       <Group justify="space-between" px="md" py="sm">
         <Group gap='xs'>
           <ActionIconOptionsMenu variant="transparent" size={30} styles={{ icon: { strokeWidth: 2 } }} />
-          <TabName style={{ textTransform: "capitalize" }} fz={"h3"} c={"var(--mantine-primary-color-6)"} pt={2} />
+          <LabelTabName style={{ textTransform: "capitalize" }} fz={"h3"} c={"var(--mantine-primary-color-6)"} pt={2} />
         </Group>
         <Group gap="xs">
           <ActionIconVinPage variant="transparent" size={30} styles={{ icon: { strokeWidth: 2 } }} />
