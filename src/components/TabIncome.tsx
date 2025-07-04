@@ -113,6 +113,7 @@ export function IncomeList() {
                 <Text
                   size="sm"
                   fw={700}
+                  c={"var(--mantine-primary-color-8)"}
                 >
                   {date}
                 </Text>
