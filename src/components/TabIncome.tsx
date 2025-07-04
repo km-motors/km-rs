@@ -122,7 +122,7 @@ export function IncomeList() {
               <Stack gap="md" px="xs">
                 {entries.map((item: Income) => (
                   <Card key={item.id} shadow="sm" radius="lg" padding="sm" withBorder style={{ overflow: "visible", border: "1px solid var(--mantine-primary-color-1)" }}>
-                    <Pill fw={500} style={{ translate: "0% -50%", border: "1px solid var(--mantine-primary-color-1)" }} pos={"absolute"} top={0} right={0} mr={"sm"} px={"md"}>{dayjs(item.time_stamp).format('hh:mm A')}</Pill>
+                    <Pill fw={500} style={{ translate: "0% -50%", border: "1px solid var(--mantine-primary-color-1)" }} pos={"absolute"} top={0} right={0} mr={"sm"} px={"md"} c={"var(--mantine-primary-color-6)"}>{dayjs(item.time_stamp).format('hh:mm A')}</Pill>
                     <Flex justify="space-between" align="center">
                       <Stack gap={0}>
                         <Group>

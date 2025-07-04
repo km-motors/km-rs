@@ -7,6 +7,10 @@ import {
   Stack,
   Alert,
   Modal,
+  Pill,
+  Text,
+  Flex,
+  Paper,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState, useEffect } from 'react';
@@ -116,29 +120,33 @@ export function FormIncome() {
       return;
     }
 
-    if (editModeItem) {
-      const { error: updateError } = await supabase
-        .from('income')
-        .update({
-          label: values.label,
-          amount: values.amount,
-          note: values.note,
-          time_stamp: values.time_stamp,
-        })
-        .eq('id', editModeItem.id);
+    if (editMode) {
+      if (editModeItem) {
+        const { error: updateError } = await supabase
+          .from('income')
+          .update({
+            label: values.label,
+            amount: values.amount,
+            note: values.note,
+            time_stamp: values.time_stamp,
+          })
+          .eq('id', editModeItem.id);
 
-      if (updateError) {
-        setError(updateError.message);
+        if (updateError) {
+          setError(updateError.message);
+        } else {
+          setItems((prev) =>
+            prev.map((item) =>
+              item.id === editModeItem.id
+                ? { ...item, ...values }
+                : item
+            )
+          );
+          setSuccess(true);
+        };
       } else {
-        setItems((prev) =>
-          prev.map((item) =>
-            item.id === editModeItem.id
-              ? { ...item, ...values }
-              : item
-          )
-        );
-        setSuccess(true);
-      };
+        setError("Invalid Record!");
+      }
     } else {
       const { data: insertedIncome, error: insertError } = await supabase
         .from('income')
@@ -180,17 +188,51 @@ export function FormIncome() {
       opened={opened}
       onClose={handelOnClose}
       title={editMode ? 'Edit Income' : 'Add Income'}
+      radius={"md"}
+      styles={{ title: { fontSize: "1.1rem", fontWeight: "bold", color: "var(--mantine-primary-color-8)" } }}
     >
       <Box maw={400} mx="auto">
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack>
-            <TextInput label="Label" required {...form.getInputProps('label')} />
-            <NumberInput label="Amount" prefix="$" min={0} decimalScale={2} required {...form.getInputProps('amount')} />
-            <TextInput label="Date & Time" type="datetime-local" required {...form.getInputProps('time_stamp')} />
-            <Textarea label="Note" placeholder="Optional note" autosize minRows={2} {...form.getInputProps('note')} />
+            <TextInput
+              label="Label"
+              required
+              radius={"sm"}
+              {...form.getInputProps('label')}
+            />
+            <NumberInput
+              label="Amount"
+              prefix="$"
+              min={0}
+              decimalScale={2}
+              required
+              radius={"sm"}
+              {...form.getInputProps('amount')}
+            />
+            <TextInput
+              label="Date & Time"
+              type="datetime-local"
+              required
+              radius={"sm"}
+              {...form.getInputProps('time_stamp')}
+            />
+            <Textarea
+              label="Note"
+              placeholder="Optional note"
+              autosize
+              minRows={6}
+              radius={"sm"}
+              {...form.getInputProps('note')}
+            />
             {error && <Alert color="red">{error}</Alert>}
             {success && <Alert color="green">Income {editMode ? 'updated' : 'added'} successfully!</Alert>}
-            <Button type="submit" loading={loading}>{editMode ? 'Save Changes' : 'Add Income'}</Button>
+            <Button
+              type="submit"
+              loading={loading}
+              radius={"md"}
+            >
+              {editMode ? 'Save Changes' : 'Add Income'}
+            </Button>
           </Stack>
         </form>
       </Box>
