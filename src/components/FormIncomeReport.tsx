@@ -28,6 +28,7 @@ export function IncomeReportForm() {
     const [loading, setLoading] = useState(false);
     const [report, setReport] = useState<any[] | null>(null);
     const [error, setError] = useState('');
+    const [rangeTypeLabel, setRangeTypeLabel] = useState('');
 
     const handleFetch = async () => {
         if (!date) return;
@@ -57,6 +58,20 @@ export function IncomeReportForm() {
         }
     }, [rangeType, date]);
 
+    useEffect(() => {
+        const parsed = dayjs(date);
+        setRangeTypeLabel('');
+
+        if (rangeType === 'day') {
+            setRangeTypeLabel(parsed.format('dddd, MMMM D, YYYY')); // e.g., "Tuesday, July 2, 2025"
+        } else if (rangeType === 'week') {
+            const start = parsed.startOf('week');
+            const end = parsed.endOf('week');
+            setRangeTypeLabel(`${start.format('MMM D')} – ${end.format('MMM D, YYYY')}`); // "Jun 30 – Jul 6, 2025"
+        } else if (rangeType === 'month') {
+            setRangeTypeLabel(parsed.format('MMMM YYYY')); // "July 2025"
+        }
+    }, [rangeType]);
     return (
         <Box maw={400} mx="auto">
             <Stack>
@@ -69,14 +84,21 @@ export function IncomeReportForm() {
                         { label: 'Month', value: 'month' },
                     ]}
                 />
+                <Stack gap={0}>
+                    <TextInput
+                        label="Select Date & Time"
+                        type="datetime-local"
+                        value={date}
+                        onChange={(e) => setDate(e.currentTarget.value)}
+                        required
+                        mb={0}
+                        radius={"sm"}
+                    />
+                    <Text c="dimmed" size="xs" mt={0} ml={"0"}>
+                        Range: {rangeTypeLabel}
+                    </Text>
+                </Stack>
 
-                <TextInput
-                    label="Select Date & Time"
-                    type="datetime-local"
-                    value={date}
-                    onChange={(e) => setDate(e.currentTarget.value)}
-                    required
-                />
 
                 <Button onClick={handleFetch} loading={loading}>
                     Refresh
