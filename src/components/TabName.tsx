@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { PAGES } from "./FloatingMenu";
 
 export function TabName(props: TextProps) {
-    const [currentPage] = useLocalStorage({ key: "--current-page" });
+    const [currentPage] = useLocalStorage({ key: "--current-page", defaultValue:PAGES.INCOME });
     const [tabName, setTabName] = useState<string>('');
     useEffect(() => {
         switch (currentPage) {

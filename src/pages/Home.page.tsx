@@ -12,7 +12,7 @@ import { OutcomeList } from '@/components/TabOutcome';
 
 
 export function HomePage() {
-  const [currentPage] = useLocalStorage({ key: "--current-page" });
+  const [currentPage] = useLocalStorage({ key: "--current-page", defaultValue:PAGES.INCOME });
 
   return (
     <Stack w="100vw" h="100vh" bg={"var(--mantine-primary-color-0)"} gap="0">
