@@ -86,7 +86,7 @@ export function OutcomeList() {
   return (
     <>
       <Stack gap="sm" style={{ marginBottom: "20px", paddingBottom: "50vh" }}>
-        {Object.entries(grouped).map(([date, entries], index, array) => {
+        {grouped.map(({ label: date, entries }, index, array) => {
           const isFirst = index === 0;
           const isLast = index === array.length - 1;
           return (
