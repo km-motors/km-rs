@@ -17,24 +17,27 @@ import { Income, useIncome } from '@/context/IncomeContext';
 
 export function FormIncome() {
   // context
-  const { items, setItems } = useIncome();
+  const { setItems } = useIncome();
 
   // observer pattern
   const [openedFrom, setOpenedForm] = useLocalStorage<FormsEnum | undefined>({ key: "--opened-form" });
-  const [editModeIncomeItem, setEditModeIncomeItem] = useLocalStorage<Income | undefined>({ key: "--edit-mode-income-item" });
+  const [editModeItem, setEditModeItem] = useLocalStorage<Income | undefined>({ key: "--edit-mode-income-item" });
 
   // states
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [opened, setOpened] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   // form
   const form = useForm({
+    mode: 'uncontrolled',
     initialValues: {
       label: '',
       amount: 0,
       note: '',
-      time_stamp: '',
+      time_stamp: new Date().toISOString().slice(0, 16),
     },
     validate: {
       label: (value) => (!value ? 'Label is required' : null),
@@ -42,31 +45,55 @@ export function FormIncome() {
     },
   });
 
-  // edit-mode: when income in localstorage
+  // update `opened` hook
   useEffect(() => {
-    if (editModeIncomeItem) {
-      form.setValues({
-        label: editModeIncomeItem?.label,
-        amount: editModeIncomeItem?.amount,
-        note: editModeIncomeItem?.note ?? '',
-        time_stamp: editModeIncomeItem?.time_stamp?.slice(0, 16),
-      });
+    if (openedFrom == FormsEnum.ADD_INCOME) {
+      setOpened(true);
+    } else {
+      setOpened(false);
     }
-  }, [editModeIncomeItem]);
+  }, [openedFrom]);
+
+  // update `editMode` hook
+  useEffect(() => {
+    if (!(typeof editModeItem === "string" && editModeItem === "undefined") && typeof editModeItem !== "undefined") {
+      setEditMode(true);
+    } else {
+      setEditMode(false);
+    }
+  }, [editModeItem, opened]); // opened: is important
 
   // onOpen
   useEffect(() => {
-    if (openedFrom == FormsEnum.ADD_INCOME) {
-      if (!editModeIncomeItem) {
-        form.reset();
-        form.setFieldValue('time_stamp', new Date().toISOString().slice(0, 16));
+    if (opened) {
+      console.log("opened");
+
+      form.reset();
+      if (editMode) {
+        console.log("edit");
+        form.setValues({
+          label: editModeItem?.label,
+          amount: editModeItem?.amount,
+          note: editModeItem?.note ?? '',
+          time_stamp: editModeItem?.time_stamp?.slice(0, 16),
+        });
+      }
+      else {
+        console.log("add");
+        form.setValues({
+          label: '',
+          amount: 0,
+          note: '',
+          time_stamp: new Date().toISOString().slice(0, 16),
+        });
       }
       // always clear states
       setSuccess(false);
       setError('');
     }
-  }, [openedFrom]);
+  }, [opened]);
 
+  // onSuccess
   useEffect(() => {
     if (success) {
       closeForm();
@@ -89,7 +116,7 @@ export function FormIncome() {
       return;
     }
 
-    if (editModeIncomeItem) {
+    if (editModeItem) {
       const { error: updateError } = await supabase
         .from('income')
         .update({
@@ -98,19 +125,19 @@ export function FormIncome() {
           note: values.note,
           time_stamp: values.time_stamp,
         })
-        .eq('id', editModeIncomeItem.id);
+        .eq('id', editModeItem.id);
 
       if (updateError) {
         setError(updateError.message);
       } else {
         setItems((prev) =>
           prev.map((item) =>
-            item.id === editModeIncomeItem.id
+            item.id === editModeItem.id
               ? { ...item, ...values }
               : item
           )
         );
-        setSuccess(true)
+        setSuccess(true);
       };
     } else {
       const { data: insertedIncome, error: insertError } = await supabase
@@ -137,20 +164,22 @@ export function FormIncome() {
     setLoading(false);
   };
 
+  // onClose
   const handelOnClose = () => {
     closeForm();
     clearIncome();
+    console.log("closed");
   }
 
   // ..
   const closeForm = () => setOpenedForm(undefined);
-  const clearIncome = () => setEditModeIncomeItem(undefined);
+  const clearIncome = () => setEditModeItem(undefined);
 
   return (
     <Modal
-      opened={openedFrom == FormsEnum.ADD_INCOME}
+      opened={opened}
       onClose={handelOnClose}
-      title={editModeIncomeItem ? 'Edit Income' : 'Add Income'}
+      title={editMode ? 'Edit Income' : 'Add Income'}
     >
       <Box maw={400} mx="auto">
         <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -160,8 +189,8 @@ export function FormIncome() {
             <TextInput label="Date & Time" type="datetime-local" required {...form.getInputProps('time_stamp')} />
             <Textarea label="Note" placeholder="Optional note" autosize minRows={2} {...form.getInputProps('note')} />
             {error && <Alert color="red">{error}</Alert>}
-            {success && <Alert color="green">Income {editModeIncomeItem ? 'updated' : 'added'} successfully!</Alert>}
-            <Button type="submit" loading={loading}>{editModeIncomeItem ? 'Save Changes' : 'Add Income'}</Button>
+            {success && <Alert color="green">Income {editMode ? 'updated' : 'added'} successfully!</Alert>}
+            <Button type="submit" loading={loading}>{editMode ? 'Save Changes' : 'Add Income'}</Button>
           </Stack>
         </form>
       </Box>

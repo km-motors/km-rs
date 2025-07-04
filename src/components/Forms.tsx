@@ -1,6 +1,6 @@
 import { useLocalStorage } from "@mantine/hooks"
 import { FormIncome } from "./FormIncome";
-import { Box, Modal } from "@mantine/core";
+import { PAGES } from "./FloatingMenu";
 
 export enum FormsEnum {
     NONE = "none",
@@ -11,7 +11,7 @@ export enum FormsEnum {
 }
 
 export function Forms() {
-    const [form, setForm] = useLocalStorage({ key: "--opened-form", defaultValue: FormsEnum.NONE });
+    const [form, setForm] = useLocalStorage<PAGES | undefined>({ key: "--opened-form", defaultValue: undefined });
     return (
         <>
             <FormIncome />
