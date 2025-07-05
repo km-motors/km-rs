@@ -125,9 +125,50 @@ export function DebitList() {
                                 <Stack pt={"0"} gap={"xs"}>
                                     <Divider pb={"xs"} color='var(--mantine-primary-color-9)' size="xs" opacity={.2} />
                                     <Flex c={"var(--mantine-primary-color-9)"} opacity={.3} style={{ textTransform: "uppercase" }}> <Text c={"dark.9"} style={{ textTransform: "uppercase", textAlign: "right" }} mr={"md"} miw={"80"}>Car:</Text> {d.car}</Flex>
-                                    <Flex c={"var(--mantine-primary-color-9)"} opacity={.3} style={{ textTransform: "lowercase" }}> <Text c={"dark.9"} style={{ textTransform: "uppercase", textAlign: "right" }} mr={"md"} miw={"80"}>Phone:</Text> {d.phone}</Flex>
-                                    <Flex c={"var(--mantine-primary-color-9)"} opacity={.3} style={{ textTransform: "lowercase" }}> <Text c={"dark.9"} style={{ textTransform: "uppercase", textAlign: "right" }} mr={"md"} miw={"80"}>E-Mail:</Text> {d.email}</Flex>
-                                    <Flex c={"var(--mantine-primary-color-9)"} opacity={.3} style={{ textTransform: "capitalize" }}> <Text c={"dark.9"} style={{ textTransform: "uppercase", textAlign: "right" }} mr={"md"} miw={"80"}>Address:</Text> {d.address}</Flex>
+                                    <Flex c={"var(--mantine-primary-color-9)"} opacity={0.3} style={{ textTransform: "lowercase" }}>
+                                        <Text
+                                            c={"dark.9"}
+                                            style={{ textTransform: "uppercase", textAlign: "right" }}
+                                            mr="md"
+                                            miw={80}
+                                        >
+                                            Phone:
+                                        </Text>
+                                        <a href={`tel:${d.phone}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                                            {d.phone}
+                                        </a>
+                                    </Flex>
+                                    <Flex c={"var(--mantine-primary-color-9)"} opacity={0.3} style={{ textTransform: "lowercase" }}>
+                                        <Text
+                                            c={"dark.9"}
+                                            style={{ textTransform: "uppercase", textAlign: "right" }}
+                                            mr="md"
+                                            miw={80}
+                                        >
+                                            E-Mail:
+                                        </Text>
+                                        <a href={`mailto:${d.email}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                                            {d.email}
+                                        </a>
+                                    </Flex>
+                                    <Flex c={"var(--mantine-primary-color-9)"} opacity={0.3} style={{ textTransform: "capitalize" }}>
+                                        <Text
+                                            c={"dark.9"}
+                                            style={{ textTransform: "uppercase", textAlign: "right" }}
+                                            mr="md"
+                                            miw={80}
+                                        >
+                                            Address:
+                                        </Text>
+                                        <a
+                                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.address)}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            style={{ color: 'inherit', textDecoration: 'none' }}
+                                        >
+                                            {d.address}
+                                        </a>
+                                    </Flex>
                                 </Stack>
                             }
                             {
