@@ -101,7 +101,7 @@ export function DebitList() {
                         </ActionIcon>
                     </Group>
                 </Flex>
-                <Stack px="xs">
+                <Stack px="xs" py="md" gap="xl">
                     {items.filter(Boolean).map((d) => (
                         <Card key={d.id} shadow="sm" radius="lg" padding="sm" withBorder style={{ overflow: "visible", border: "1px solid var(--mantine-primary-color-1)" }}>
                             <Pill fw={500} style={{ translate: "0% -50%", border: "1px solid var(--mantine-primary-color-1)" }} pos={"absolute"} top={0} right={0} mr={"sm"} px={"md"} c={"var(--mantine-primary-color-6)"}>{dayjs(d.time_stamp).format('MM/DD/YYYY')}</Pill>
@@ -161,7 +161,7 @@ export function DebitList() {
                                             Address:
                                         </Text>
                                         <a
-                                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.address)}`}
+                                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.address || "")}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             style={{ color: 'inherit', textDecoration: 'none' }}
