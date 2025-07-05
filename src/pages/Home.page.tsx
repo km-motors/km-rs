@@ -27,7 +27,7 @@ export function HomePage() {
           <ActionIconUserMenu variant="transparent" size={30} styles={{ icon: { strokeWidth: 3 } }} />
         </Group>
       </Group>
-      <Box className='data-block' flex={1} style={{ overflow: "scroll", borderTop: "0.1rem solid var(--mantine-primary-color-4)" }}>
+      <Box className='data-block' flex={1} style={{ overflow: "scroll" }}>
         {currentPage == PAGES.INCOME && <IncomeList />}
         {currentPage == PAGES.OUTCOME && <OutcomeList />}
         {currentPage == PAGES.DEBIT && <DebitList />}
