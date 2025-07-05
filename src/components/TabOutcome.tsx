@@ -85,7 +85,7 @@ export function OutcomeList() {
 
   return (
     <>
-      <Stack gap="sm" style={{ marginBottom: "20px", paddingBottom: "50vh" }}>
+      <Stack gap="0" style={{ marginBottom: "20px", paddingBottom: "50vh" }}>
         {grouped.map(({ label: date, entries }, index, array) => {
           const isFirst = index === 0;
           const isLast = index === array.length - 1;
@@ -100,14 +100,13 @@ export function OutcomeList() {
               <Box style={{
                 position: 'sticky',
                 top: 0,
-                backgroundColor: 'var(--mantine-primary-color-0)',
+                backgroundColor: 'var(--mantine-primary-color-1)',
                 paddingBlock: '0.25rem',
                 zIndex: 1,
                 opacity: 0.8,
-                borderBottom: "0.1rem solid var(--mantine-primary-color-4)"
+                borderTop: "0.1rem solid var(--mantine-primary-color-0)",
+                borderBottom: "0.1rem solid var(--mantine-primary-color-0)"
               }}
-                mt={isFirst ? 0 : "md"}
-                mb="md"
                 px="xs"
               >
                 <Text
@@ -118,6 +117,7 @@ export function OutcomeList() {
                   {date}
                 </Text>
               </Box>
+              <Box pt="md" />
 
               {/* Cards */}
               <Stack gap="md" px="xs">
@@ -155,6 +155,7 @@ export function OutcomeList() {
                     }
                   </Card>
                 ))}
+                <Box pt="xl" />
               </Stack>
             </div>
           );
