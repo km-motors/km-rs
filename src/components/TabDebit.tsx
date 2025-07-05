@@ -5,8 +5,8 @@ import {
     Group
 } from '@mantine/core';
 import { ReactComponent as IconPlus } from "@/icons/plus.svg?react";
-import { ReactComponent as IconEdit } from "@/icons/plus.svg?react";
-import { ReactComponent as IconTrash } from "@/icons/plus.svg?react";
+import { ReactComponent as IconEdit } from "@/icons/align-left.svg?react";
+import { ReactComponent as IconTrash } from "@/icons/align-left.svg?react";
 import { ReactComponent as IconSearch } from "@/icons/search.svg?react";
 import { ReactComponent as IconPaid } from "@/icons/progress-check.svg?react";
 import { ReactComponent as IconNotPaid } from "@/icons/circle-dashed-plus.svg?react";
