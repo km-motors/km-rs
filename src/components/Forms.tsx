@@ -4,6 +4,7 @@ import { PAGES } from "./FloatingMenu";
 import { FormOutcome } from "./FormOutcome";
 import { FormVIN } from "./FormVIN";
 import { FromIncomeReport } from "./FormIncomeReport";
+import { FormDebit } from "./FormDebit";
 
 export enum FormsEnum {
     NONE = "none",
@@ -23,6 +24,7 @@ export function Forms() {
             <FormOutcome />
             <FormVIN />
             <FromIncomeReport />
+            <FormDebit />
         </>
     )
 }

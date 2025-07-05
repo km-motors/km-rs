@@ -14,15 +14,13 @@ const enterDelayactor = 100;
 export function FloatingActionIcon(props: ActionIconProps) {
     const [opened, { close, toggle }] = useDisclosure(false);
     const ref = useClickOutside(() => close());
-    const [, setIncome] = useLocalStorage<Income | undefined>({ key: "--income", defaultValue: undefined });
-    const [, setOutcome] = useLocalStorage<Income | undefined>({ key: "--outcome", defaultValue: undefined });
     const [, setForm] = useLocalStorage({ key: "--opened-form" });
     return (
         <Box ref={ref} style={{ position: "absolute", top: "0%", left: "50%", translate: "-50% -50%" }} w={60} h={60}>
             <Stack style={{ position: "absolute", bottom: "100%", left: "50%", translate: "-50% 0%", pointerEvents: "none" }} mb={20} align="center">
-                <PopupActionIcon mounted={opened} enterDelay={enterDelayactor * 0} Icon={IconIncome} onClick={() => { close(); setIncome(undefined); setForm(FormsEnum.ADD_INCOME); }} />
-                <PopupActionIcon mounted={opened} enterDelay={enterDelayactor * 1} Icon={IconOutcome} onClick={() => { close(); setOutcome(undefined); setForm(FormsEnum.ADD_OUTCOME); }} />
-                <PopupActionIcon mounted={opened} enterDelay={enterDelayactor * 2} Icon={IconDebit} onClick={() => close()} />
+                <PopupActionIcon mounted={opened} enterDelay={enterDelayactor * 0} Icon={IconIncome} onClick={() => { close(); setForm(FormsEnum.ADD_INCOME); }} />
+                <PopupActionIcon mounted={opened} enterDelay={enterDelayactor * 1} Icon={IconOutcome} onClick={() => { close(); setForm(FormsEnum.ADD_OUTCOME); }} />
+                <PopupActionIcon mounted={opened} enterDelay={enterDelayactor * 2} Icon={IconDebit} onClick={() => {close(); setForm(FormsEnum.ADD_DEBIT);}} />
                 <PopupActionIcon mounted={opened} enterDelay={enterDelayactor * 3} Icon={IconDebitPayment} onClick={() => close()} />
             </Stack>
             <ActionIcon {...props} onClick={toggle}>

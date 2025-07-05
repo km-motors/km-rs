@@ -9,6 +9,7 @@ import { useLocalStorage } from '@mantine/hooks';
 import { LabelTabName } from '@/components/LabelTabName';
 import { ActionIconVinPage } from '@/components/ActionIconVinPage';
 import { OutcomeList } from '@/components/TabOutcome';
+import { DebitList } from '@/components/TabDebit';
 
 
 export function HomePage() {
@@ -29,6 +30,7 @@ export function HomePage() {
       <Box className='data-block' flex={1} style={{ overflow: "scroll", borderTop: "0.1rem solid var(--mantine-primary-color-4)" }}>
         {currentPage == PAGES.INCOME && <IncomeList />}
         {currentPage == PAGES.OUTCOME && <OutcomeList />}
+        {currentPage == PAGES.DEBIT && <DebitList />}
       </Box>
       <Center style={{ position: "fixed", bottom: "0", left: "50%", translate: "-50% 0", zIndex: 2 }} mb={"lg"}>
         <FloatingMenu />

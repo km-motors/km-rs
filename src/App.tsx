@@ -7,6 +7,7 @@ import { theme } from './theme';
 import { DatesProvider } from '@mantine/dates';
 import { IncomeProvider } from './context/IncomeContext';
 import { OutcomeProvider } from './context/OutcomeContext';
+import { DebitProvider } from './context/DebitContext';
 
 export default function App() {
   return (
@@ -14,7 +15,9 @@ export default function App() {
       <DatesProvider settings={{ locale: 'en', firstDayOfWeek: 0 }}>
         <IncomeProvider>
           <OutcomeProvider>
-            <Router />
+            <DebitProvider>
+              <Router />
+            </DebitProvider>
           </OutcomeProvider>
         </IncomeProvider>
       </DatesProvider>
