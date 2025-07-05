@@ -2,7 +2,8 @@ import {
     Box, Stack, Card, Flex, ActionIcon, Loader, Button,
     TextInput, Text,
     Modal,
-    Group
+    Group,
+    Pill
 } from '@mantine/core';
 import { ReactComponent as IconPlus } from "@/icons/plus.svg?react";
 import { ReactComponent as IconEdit } from "@/icons/align-left.svg?react";
@@ -18,6 +19,7 @@ import {
 import type { Debit } from '@/types/Debit';
 import { useDebit } from '@/context/DebitContext';
 import { FormsEnum } from './Forms';
+import dayjs from 'dayjs';
 
 enum DebitFilterEnum {
     PAYED = "payed",
@@ -101,6 +103,7 @@ export function DebitList() {
                 <Stack px="xs">
                     {items.filter(Boolean).map((d) => (
                         <Card key={d.id} shadow="sm" radius="lg" padding="sm" withBorder style={{ overflow: "visible", border: "1px solid var(--mantine-primary-color-1)" }}>
+                            <Pill fw={500} style={{ translate: "0% -50%", border: "1px solid var(--mantine-primary-color-1)" }} pos={"absolute"} top={0} right={0} mr={"sm"} px={"md"} c={"var(--mantine-primary-color-6)"}>{dayjs(d.time_stamp).format('MM/DD/YYYY')}</Pill>
                             <Flex justify="space-between" align="center">
                                 <Box>
                                     <strong>{d.name}</strong><br />
