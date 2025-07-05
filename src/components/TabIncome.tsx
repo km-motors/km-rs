@@ -89,7 +89,7 @@ export function IncomeList() {
 
   return (
     <>
-      <Stack gap="sm" style={{ marginBottom: "20px", paddingBottom: "50vh" }}>
+      <Stack gap="0" style={{ marginBottom: "0", paddingBottom: "50vh" }}>
         {grouped.map(({ label: date, rawDate, entries }, index, array) => {
           const isFirst = index === 0;
           const isLast = index === array.length - 1;
@@ -104,14 +104,15 @@ export function IncomeList() {
               <Group style={{
                 position: 'sticky',
                 top: 0,
-                backgroundColor: 'var(--mantine-primary-color-0)',
+                backgroundColor: 'var(--mantine-primary-color-1)',
                 paddingBlock: '0.25rem',
                 zIndex: 1,
                 opacity: 0.8,
-                borderBottom: "0.1rem solid var(--mantine-primary-color-4)"
+                borderBottom: "0.1rem solid var(--mantine-primary-color-0)",
+                borderTop: "0.1rem solid var(--mantine-primary-color-0)"
               }}
-                mt={isFirst ? 0 : "md"}
-                mb="md"
+                mt={isFirst ? 0 : "0"}
+                mb="0"
                 px="xs"
                 justify="space-between"
               >
@@ -130,6 +131,7 @@ export function IncomeList() {
                   <IconSum />
                 </ActionIcon>
               </Group>
+              <Box pt="md" />
 
               {/* Cards */}
               <Stack gap="md" px="xs">
@@ -167,6 +169,7 @@ export function IncomeList() {
                     }
                   </Card>
                 ))}
+                <Box pt="xl" />
               </Stack>
             </div>
           );
