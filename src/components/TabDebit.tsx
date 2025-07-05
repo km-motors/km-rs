@@ -3,7 +3,8 @@ import {
     TextInput, Text,
     Modal,
     Group,
-    Pill
+    Pill,
+    Divider
 } from '@mantine/core';
 import { ReactComponent as IconPlus } from "@/icons/plus.svg?react";
 import { ReactComponent as IconEdit } from "@/icons/align-left.svg?react";
@@ -105,16 +106,40 @@ export function DebitList() {
                         <Card key={d.id} shadow="sm" radius="lg" padding="sm" withBorder style={{ overflow: "visible", border: "1px solid var(--mantine-primary-color-1)" }}>
                             <Pill fw={500} style={{ translate: "0% -50%", border: "1px solid var(--mantine-primary-color-1)" }} pos={"absolute"} top={0} right={0} mr={"sm"} px={"md"} c={"var(--mantine-primary-color-6)"}>{dayjs(d.time_stamp).format('MM/DD/YYYY')}</Pill>
                             <Flex justify="space-between" align="center">
-                                <Box>
-                                    <strong>{d.name}</strong><br />
-                                    <span>{d.car} • {d.phone}</span>
-                                    <Text size="sm" c="dimmed">Amount: ${d.amount}</Text>
-                                </Box>
+                                <Stack gap={0}>
+                                    <Group>
+                                        <Text fw={500}>{d.name}</Text>
+                                    </Group>
+
+                                    <Text size="sm" c="dimmed">
+                                        ${d.amount.toFixed(2)}
+                                    </Text>
+                                </Stack>
                                 <Flex gap="xs">
                                     <ActionIcon onClick={() => openEdit(d)} variant="light"><IconEdit width={18} height={18} /></ActionIcon>
                                     <ActionIcon color="red" onClick={() => setConfirmId(d.id)} variant="light"><IconTrash width={18} height={18} /></ActionIcon>
                                 </Flex>
                             </Flex>
+                            {
+                                (d.car || d.phone || d.email || d.address) &&
+                                <Stack pt={"0"} gap={"xs"}>
+                                    <Divider pb={"xs"} color='var(--mantine-primary-color-9)' size="xs" opacity={.2} />
+                                    <Flex c={"var(--mantine-primary-color-9)"} opacity={.3} style={{ textTransform: "uppercase" }}> <Text c={"dark.9"} style={{ textTransform: "uppercase", textAlign: "right" }} mr={"md"} miw={"80"}>Car:</Text> {d.car}</Flex>
+                                    <Flex c={"var(--mantine-primary-color-9)"} opacity={.3} style={{ textTransform: "lowercase" }}> <Text c={"dark.9"} style={{ textTransform: "uppercase", textAlign: "right" }} mr={"md"} miw={"80"}>Phone:</Text> {d.phone}</Flex>
+                                    <Flex c={"var(--mantine-primary-color-9)"} opacity={.3} style={{ textTransform: "lowercase" }}> <Text c={"dark.9"} style={{ textTransform: "uppercase", textAlign: "right" }} mr={"md"} miw={"80"}>E-Mail:</Text> {d.email}</Flex>
+                                    <Flex c={"var(--mantine-primary-color-9)"} opacity={.3} style={{ textTransform: "capitalize" }}> <Text c={"dark.9"} style={{ textTransform: "uppercase", textAlign: "right" }} mr={"md"} miw={"80"}>Address:</Text> {d.address}</Flex>
+                                </Stack>
+                            }
+                            {
+                                d.note &&
+                                <Box pt={"xs"}>
+                                    <Divider pb={"xs"} color='var(--mantine-primary-color-9)' size="xs" opacity={.2} />
+                                    <Flex c={"var(--mantine-primary-color-9)"} opacity={.5}>
+                                        {d.note}
+                                    </Flex>
+                                </Box>
+
+                            }
                         </Card>
                     ))}
                     {loading && <Loader />}
