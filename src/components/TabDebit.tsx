@@ -98,9 +98,9 @@ export function DebitList() {
                         </ActionIcon>
                     </Group>
                 </Flex>
-                <Stack>
+                <Stack px="xs">
                     {items.filter(Boolean).map((d) => (
-                        <Card key={d.id} withBorder shadow="sm" radius="md">
+                        <Card key={d.id} shadow="sm" radius="lg" padding="sm" withBorder style={{ overflow: "visible", border: "1px solid var(--mantine-primary-color-1)" }}>
                             <Flex justify="space-between" align="center">
                                 <Box>
                                     <strong>{d.name}</strong><br />
