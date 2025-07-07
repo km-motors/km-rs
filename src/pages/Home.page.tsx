@@ -10,10 +10,11 @@ import { LabelTabName } from '@/components/LabelTabName';
 import { ActionIconVinPage } from '@/components/ActionIconVinPage';
 import { OutcomeList } from '@/components/TabOutcome';
 import { DebitList } from '@/components/TabDebit';
+import { DebitPaymentsList } from '@/components/TabDebitPayments';
 
 
 export function HomePage() {
-  const [currentPage] = useLocalStorage({ key: "--current-page", defaultValue:PAGES.INCOME });
+  const [currentPage] = useLocalStorage({ key: "--current-page", defaultValue: PAGES.INCOME });
 
   return (
     <Stack w="100vw" h="100vh" bg={"var(--mantine-primary-color-0)"} gap="0">
@@ -31,6 +32,7 @@ export function HomePage() {
         {currentPage == PAGES.INCOME && <IncomeList />}
         {currentPage == PAGES.OUTCOME && <OutcomeList />}
         {currentPage == PAGES.DEBIT && <DebitList />}
+        {currentPage == PAGES.PAYMENT && <DebitPaymentsList />}
       </Box>
       <Center style={{ position: "fixed", bottom: "0", left: "50%", translate: "-50% 0", zIndex: 2 }} mb={"lg"}>
         <FloatingMenu />
