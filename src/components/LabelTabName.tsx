@@ -18,7 +18,7 @@ export function LabelTabName(props: TextProps) {
                 setTabName("debit")
                 break;
             case PAGES.PAYMENT:
-                setTabName("debit payment")
+                setTabName("debit payments")
                 break;
             default:
                 break;
