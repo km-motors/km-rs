@@ -135,7 +135,7 @@ export function DebitList() {
                                 </Flex>
                             </Flex>
                             {d.note &&
-                                <Box py={"xs"}>
+                                <Box pt={"xs"}>
                                     <Divider pb={"xs"} color='var(--mantine-primary-color-9)' size="xs" opacity={.2} />
                                     <Flex c={"var(--mantine-primary-color-9)"} opacity={.5}>
                                         {d.note}
@@ -145,7 +145,7 @@ export function DebitList() {
                             {
                                 (d.car || d.phone || d.email || d.address) &&
                                 <>
-                                    <Divider />
+                                    <Divider mt={"xs"}/>
                                     <ContactIconsRow d={d} />
                                 </>
 
