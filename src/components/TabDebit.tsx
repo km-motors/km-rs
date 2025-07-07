@@ -145,7 +145,7 @@ export function DebitList() {
                             {
                                 (d.car || d.phone || d.email || d.address) &&
                                 <>
-                                    <Divider mt={"xs"}/>
+                                    <Divider mt={"xs"} />
                                     <ContactIconsRow d={d} />
                                 </>
 
