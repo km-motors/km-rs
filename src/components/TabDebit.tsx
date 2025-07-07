@@ -40,6 +40,7 @@ export function DebitList() {
     // observer pattern
     const [, setOpenedForm] = useLocalStorage<FormsEnum | undefined>({ key: "--opened-form", defaultValue: undefined });
     const [, setEditItem] = useLocalStorage<Debit | undefined>({ key: "--edit-mode-debit-item", defaultValue: undefined });
+    const [, setPaymentsItem] = useLocalStorage<Debit | undefined>({ key: "--debit-payments-item", defaultValue: undefined });
     const [filter, setFilter] = useLocalStorage<DebitFilterEnum | undefined>({ key: "--debit-filter", defaultValue: undefined });
 
     const { items, setItems } = useDebit();
@@ -77,6 +78,9 @@ export function DebitList() {
 
     function openAdd() { setEditItem(undefined); openForm(); }
     function openEdit(item: Debit) { setEditItem(item); openForm(); }
+    function openDebitPayment(item: Debit) {
+        setPaymentsItem(item);
+    }
 
     function updateFilter(f: DebitFilterEnum) {
         if (f === filter) setFilter(undefined);
@@ -125,8 +129,9 @@ export function DebitList() {
                                     </Text>
                                 </Stack>
                                 <Flex gap="xs">
+                                    <ActionIcon onClick={() => openDebitPayment(d)} variant="light" color="yellow"><IconEdit width={18} height={18} /></ActionIcon>
                                     <ActionIcon onClick={() => openEdit(d)} variant="light"><IconEdit width={18} height={18} /></ActionIcon>
-                                    <ActionIcon color="red" onClick={() => setConfirmId(d.id)} variant="light"><IconTrash width={18} height={18} /></ActionIcon>
+                                    <ActionIcon onClick={() => setConfirmId(d.id)} variant="light" color="red"><IconTrash width={18} height={18} /></ActionIcon>
                                 </Flex>
                             </Flex>
                             {
