@@ -246,7 +246,7 @@ export const ContactIconsRow = ({ d }: ContactIconsRowProps) => {
 
             {/* BUTTON + ICONS */}
             <Group gap="xs" wrap="nowrap" justify="space-between" mt={"xs"} mr={"xs"}>
-                <Button variant="outline" color="primary" onClick={open}>
+                <Button variant="default" onClick={open} radius="xl" h="28">
                     Contact Info
                 </Button>
                 <Group>
