@@ -12,7 +12,7 @@ import { ReactComponent as IconEdit } from "@/icons/align-left.svg?react";
 import { ReactComponent as IconTrash } from "@/icons/align-left.svg?react";
 import { ReactComponent as IconSearch } from "@/icons/search.svg?react";
 import { ReactComponent as IconPaid } from "@/icons/progress-check.svg?react";
-import { ReactComponent as IconNotPaid } from "@/icons/circle-dashed-plus.svg?react";
+import { ReactComponent as IconNotPaid } from "@/icons/circle-dashed-minus.svg?react";
 import { ReactComponent as IconMapPin } from "@/icons/map-pin.svg?react";
 import { ReactComponent as IconMail } from "@/icons/at.svg?react";
 import { ReactComponent as IconMessage } from "@/icons/message.svg?react";
