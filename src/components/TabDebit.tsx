@@ -134,6 +134,14 @@ export function DebitList() {
                                     <ActionIcon onClick={() => setConfirmId(d.id)} variant="light" color="red"><IconTrash width={18} height={18} /></ActionIcon>
                                 </Flex>
                             </Flex>
+                            {d.note &&
+                                <Box py={"xs"}>
+                                    <Divider pb={"xs"} color='var(--mantine-primary-color-9)' size="xs" opacity={.2} />
+                                    <Flex c={"var(--mantine-primary-color-9)"} opacity={.5}>
+                                        {d.note}
+                                    </Flex>
+                                </Box>
+                            }
                             {
                                 (d.car || d.phone || d.email || d.address) &&
                                 <>
@@ -141,14 +149,6 @@ export function DebitList() {
                                     <ContactIconsRow d={d} />
                                 </>
 
-                            }
-                            {d.note &&
-                                <Box pt={"xs"}>
-                                    <Divider pb={"xs"} color='var(--mantine-primary-color-9)' size="xs" opacity={.2} />
-                                    <Flex c={"var(--mantine-primary-color-9)"} opacity={.5}>
-                                        {d.note}
-                                    </Flex>
-                                </Box>
                             }
                         </Card>
                     ))}
