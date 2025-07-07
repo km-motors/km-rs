@@ -30,6 +30,7 @@ import { useDebit } from '@/context/DebitContext';
 import { FormsEnum } from './Forms';
 import dayjs from 'dayjs';
 import { VinViewModal } from './FormVIN';
+import { PAGES } from './FloatingMenu';
 
 enum DebitFilterEnum {
     PAYED = "payed",
@@ -42,6 +43,7 @@ export function DebitList() {
     const [, setEditItem] = useLocalStorage<Debit | undefined>({ key: "--edit-mode-debit-item", defaultValue: undefined });
     const [, setPaymentsItem] = useLocalStorage<Debit | undefined>({ key: "--debit-payments-item", defaultValue: undefined });
     const [filter, setFilter] = useLocalStorage<DebitFilterEnum | undefined>({ key: "--debit-filter", defaultValue: undefined });
+    const [, setCurrentPage] = useLocalStorage<PAGES>({ key: "--current-page", defaultValue: PAGES.INCOME });
 
     const { items, setItems } = useDebit();
     const [page, setPage] = useState(0);
@@ -80,6 +82,7 @@ export function DebitList() {
     function openEdit(item: Debit) { setEditItem(item); openForm(); }
     function openDebitPayment(item: Debit) {
         setPaymentsItem(item);
+        setCurrentPage(PAGES.PAYMENT);
     }
 
     function updateFilter(f: DebitFilterEnum) {
