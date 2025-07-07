@@ -48,7 +48,7 @@ export enum PAGES {
 
 export function FloatingMenu() {
     const isMobile = useMediaQuery('(max-width: 768px)');
-    const [currentPage, setCurrentPage] = useLocalStorage({ key: "--current-page", defaultValue: PAGES.INCOME });
+    const [currentPage, setCurrentPage] = useLocalStorage<PAGES>({ key: "--current-page", defaultValue: PAGES.INCOME });
     return (
         <Group style={{ border: "0.05rem solid var(--mantine-primary-color-6)", borderRadius: "var(--mantine-radius-xl)", flexWrap: "nowrap", opacity:0.8 }} pos="relative" gap={0} px={10} py={3} bg="var(--mantine-primary-color-0)">
             <Tooltip label="Income" {...tooltipProps}>
