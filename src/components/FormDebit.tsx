@@ -137,7 +137,7 @@ export function FormDebit() {
                     <TextInput label="Name" required {...form.getInputProps('name')} radius="sm"/>
                     <TextInput label="Phone" {...form.getInputProps('phone')} radius="sm"/>
                     <TextInput label="Email" {...form.getInputProps('email')} radius="sm"/>
-                    <TextInput label="Car" {...form.getInputProps('car')} radius="sm"/>
+                    <TextInput label="VIN" {...form.getInputProps('car')} radius="sm"/>
                     <Textarea label="Address" {...form.getInputProps('address')} radius="sm"/>
                     <NumberInput
                         label="Amount"
