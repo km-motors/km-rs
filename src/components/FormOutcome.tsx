@@ -7,6 +7,7 @@ import {
   Stack,
   Alert,
   Modal,
+  Checkbox,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState, useEffect } from 'react';
@@ -38,6 +39,7 @@ export function FormOutcome() {
       amount: 0,
       note: '',
       time_stamp: new Date().toISOString().slice(0, 16),
+      image_url: ''
     },
     validate: {
       label: (value) => (!value ? 'Label is required' : null),
@@ -76,6 +78,7 @@ export function FormOutcome() {
           amount: editModeItem?.amount,
           note: editModeItem?.note ?? '',
           time_stamp: editModeItem?.time_stamp?.slice(0, 16),
+          image_url: editModeItem?.image_url ?? ''
         });
       }
       else {
@@ -85,6 +88,7 @@ export function FormOutcome() {
           amount: 0,
           note: '',
           time_stamp: new Date().toISOString().slice(0, 16),
+          image_url: ''
         });
       }
       // always clear states
@@ -125,6 +129,7 @@ export function FormOutcome() {
             amount: values.amount,
             note: values.note,
             time_stamp: values.time_stamp,
+            image_url: values.image_url
           })
           .eq('id', editModeItem.id);
 
@@ -153,6 +158,7 @@ export function FormOutcome() {
             amount: values.amount,
             note: values.note,
             time_stamp: values.time_stamp,
+            image_url: values.image_url
           },
         ])
         .select()
@@ -211,6 +217,13 @@ export function FormOutcome() {
               required
               radius={"sm"}
               {...form.getInputProps('time_stamp')}
+            />
+            <Checkbox
+              label="With Document"
+              checked={form.values.image_url === "true"}
+              onChange={(event) =>
+                form.setFieldValue("image_url", event.currentTarget.checked ? "true" : "")
+              }
             />
             <Textarea
               label="Note"
