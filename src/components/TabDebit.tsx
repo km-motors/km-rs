@@ -29,6 +29,7 @@ import type { Debit } from '@/types/Debit';
 import { useDebit } from '@/context/DebitContext';
 import { FormsEnum } from './Forms';
 import dayjs from 'dayjs';
+import { VinViewModal } from './FormVIN';
 
 enum DebitFilterEnum {
     PAYED = "payed",
@@ -184,6 +185,7 @@ interface ContactIconsRowProps {
 
 export const ContactIconsRow = ({ d }: ContactIconsRowProps) => {
     const [opened, { open, close }] = useDisclosure(false);
+    const [vinModalOpen, setVinModalOpen] = useState(false);
 
     return (
         <>
@@ -244,11 +246,20 @@ export const ContactIconsRow = ({ d }: ContactIconsRowProps) => {
                 </Button>
                 <Group>
                     {d.car && (
-                        <Tooltip label="VIN">
-                            <ActionIcon variant="default">
-                                <IconBarcode width={20} height={20} />
-                            </ActionIcon>
-                        </Tooltip>
+                        <>
+                            <Tooltip label="VIN">
+                                <ActionIcon variant="default" onClick={() => setVinModalOpen(true)}>
+                                    <IconBarcode width={20} height={20} />
+                                </ActionIcon>
+                            </Tooltip>
+
+                            <VinViewModal
+                                vin={d.car}
+                                opened={vinModalOpen}
+                                onClose={() => setVinModalOpen(false)}
+                            />
+                        </>
+
                     )}
 
                     {d.address && (

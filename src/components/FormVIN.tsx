@@ -166,7 +166,7 @@ export function FormVIN() {
             {error &&
                 <Alert color="red" mt={"lg"} styles={{ message: { color: "var(--mantine-color-red-9)" } }} variant="light" style={{ color: "red" }} radius={"lg"}>
                     <Group gap={6}>
-                        <InfoIcon strokeWidth={1.2}/>
+                        <InfoIcon strokeWidth={1.2} />
                         {error}
                     </Group>
                 </Alert>
@@ -174,4 +174,67 @@ export function FormVIN() {
             {result && <VinResultForm data={result} />}
         </Modal>
     )
+}
+
+export function VinViewModal({
+    vin,
+    opened,
+    onClose,
+}: {
+    vin: string;
+    opened: boolean;
+    onClose: () => void;
+}) {
+    const [result, setResult] = useState<any | null>(null);
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (!opened) return;
+
+        setResult(null);
+        setError('');
+        setLoading(true);
+
+        decodeVin(vin)
+            .then(setResult)
+            .catch(() => setError('Failed to decode VIN'))
+            .finally(() => setLoading(false));
+    }, [vin, opened]);
+
+    return (
+        <Modal
+            opened={opened}
+            onClose={onClose}
+            title={`VIN: ${vin}`}
+            radius="md"
+            size="lg"
+            styles={{
+                title: {
+                    fontSize: '1.1rem',
+                    fontWeight: 'bold',
+                    color: 'var(--mantine-primary-color-8)',
+                },
+            }}
+        >
+            <Stack>
+                {error && (
+                    <Alert
+                        color="red"
+                        radius="md"
+                        variant="light"
+                        styles={{ message: { color: 'var(--mantine-color-red-9)' } }}
+                    >
+                        <Group gap={6}>
+                            <InfoIcon strokeWidth={1.2} />
+                            {error}
+                        </Group>
+                    </Alert>
+                )}
+
+                {result && <VinResultForm data={result} />}
+                {!result && !error && loading && <Text>Loading VIN info...</Text>}
+            </Stack>
+        </Modal>
+    );
 }
