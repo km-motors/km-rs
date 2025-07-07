@@ -5,6 +5,7 @@ export type Outcome = {
   label: string;
   amount: number;
   note?: string;
+  image_url?:string;
   time_stamp: string;
 };
 

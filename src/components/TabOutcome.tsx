@@ -11,9 +11,12 @@ import {
   Divider,
   Group,
   Pill,
+  CopyButton,
 } from '@mantine/core';
 import { ReactComponent as IconEdit } from "@/icons/align-left.svg?react";
 import { ReactComponent as IconTrash } from "@/icons/align-left.svg?react";
+import { ReactComponent as IconCheck } from "@/icons/check.svg?react";
+import { ReactComponent as IconCopy } from "@/icons/copy.svg?react";
 
 import { useIntersection, useLocalStorage } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
@@ -135,10 +138,11 @@ export function OutcomeList() {
                         </Text>
                       </Stack>
                       <Flex gap="xs">
+                        <ReceiptIdentifier item={item} />
                         <ActionIcon variant="light" onClick={() => handleEdit(item)}>
                           <IconEdit width={18} height={18} />
                         </ActionIcon>
-                        <ActionIcon variant="light" color="red" onClick={() => setConfirmId(item.id)}>
+                        <ActionIcon variant="light" onClick={() => setConfirmId(item.id)} color="red">
                           <IconTrash width={18} height={18} />
                         </ActionIcon>
                       </Flex>
@@ -195,6 +199,58 @@ export function OutcomeList() {
             Delete
           </Button>
         </Flex>
+      </Modal>
+    </>
+  );
+}
+
+
+export function ReceiptIdentifier({ item }: { item: Outcome }) {
+  const [opened, setOpened] = useState(false);
+
+  // Format timestamp into ID: dd-mm-yyyy-hh-mm-ss-ms
+  const identifier = dayjs(item.time_stamp).format('DD-MM-YYYY-HH-mm-ss-SSS');
+
+  return (
+    <>
+      {(item.image_url === 'true') && (
+        <ActionIcon
+          variant="light"
+          color="yellow"
+          onClick={() => setOpened(true)}
+        >
+          <IconEdit width={18} height={18} />
+        </ActionIcon>
+      )}
+
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="Receipt Identifier"
+        radius="md"
+        centered
+      >
+        <Stack align="center" gap="md">
+          <Text size="sm" ta="center" c="dimmed">
+            Write this identifier on the back of the document to easily look it up later:
+          </Text>
+          <Text fw={700} size="lg" ta="center">
+            {identifier}
+          </Text>
+
+          <CopyButton value={identifier}>
+            {({ copied, copy }) => (
+              <Button
+                onClick={copy}
+                leftSection={copied ? <IconCheck width={16} height={16} /> : <IconCopy width={16} height={16} />}
+                color={copied ? 'teal' : 'blue'}
+                variant="light"
+              >
+                {copied ? 'Copied' : 'Copy Identifier'}
+              </Button>
+            )}
+          </CopyButton>
+        </Stack>
       </Modal>
     </>
   );
