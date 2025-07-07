@@ -4,7 +4,8 @@ import {
     Modal,
     Group,
     Pill,
-    Divider
+    Divider,
+    Tooltip
 } from '@mantine/core';
 import { ReactComponent as IconPlus } from "@/icons/plus.svg?react";
 import { ReactComponent as IconEdit } from "@/icons/align-left.svg?react";
@@ -12,7 +13,14 @@ import { ReactComponent as IconTrash } from "@/icons/align-left.svg?react";
 import { ReactComponent as IconSearch } from "@/icons/search.svg?react";
 import { ReactComponent as IconPaid } from "@/icons/progress-check.svg?react";
 import { ReactComponent as IconNotPaid } from "@/icons/circle-dashed-plus.svg?react";
-import { useIntersection, useDebouncedValue, useLocalStorage } from '@mantine/hooks';
+import { ReactComponent as IconMapPin } from "@/icons/map-pin.svg?react";
+import { ReactComponent as IconMail } from "@/icons/at.svg?react";
+import { ReactComponent as IconMessage } from "@/icons/message.svg?react";
+import { ReactComponent as IconPhone } from "@/icons/phone.svg?react";
+import { ReactComponent as IconBarcode } from "@/icons/grid-scan.svg?react";
+
+
+import { useIntersection, useDebouncedValue, useLocalStorage, useDisclosure } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import {
     fetchDebitPaginated, addDebit, updateDebit, deleteDebit
@@ -122,62 +130,11 @@ export function DebitList() {
                             </Flex>
                             {
                                 (d.car || d.phone || d.email || d.address) &&
-                                <Stack pt={"0"} gap={"xs"}>
-                                    <Divider pb={"xs"} color='var(--mantine-primary-color-9)' size="xs" opacity={.2} />
-                                    {d.car &&
-                                        <Flex c={"var(--mantine-primary-color-9)"} opacity={.3} style={{ textTransform: "uppercase" }}> <Text c={"dark.9"} style={{ textTransform: "uppercase", textAlign: "right" }} mr={"md"} miw={"80"}>Car:</Text> {d.car}</Flex>
-                                    }
-                                    {d.phone &&
-                                        <Flex c={"var(--mantine-primary-color-9)"} opacity={0.3} style={{ textTransform: "lowercase" }}>
-                                            <Text
-                                                c={"dark.9"}
-                                                style={{ textTransform: "uppercase", textAlign: "right" }}
-                                                mr="md"
-                                                miw={80}
-                                            >
-                                                Phone:
-                                            </Text>
-                                            <a href={`tel:${d.phone}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                                                {d.phone}
-                                            </a>
-                                        </Flex>
-                                    }
-                                    {d.email &&
-                                        <Flex c={"var(--mantine-primary-color-9)"} opacity={0.3} style={{ textTransform: "lowercase" }}>
-                                            <Text
-                                                c={"dark.9"}
-                                                style={{ textTransform: "uppercase", textAlign: "right" }}
-                                                mr="md"
-                                                miw={80}
-                                            >
-                                                E-Mail:
-                                            </Text>
-                                            <a href={`mailto:${d.email}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                                                {d.email}
-                                            </a>
-                                        </Flex>
-                                    }
-                                    {d.address &&
-                                        <Flex c={"var(--mantine-primary-color-9)"} opacity={0.3} style={{ textTransform: "capitalize" }}>
-                                            <Text
-                                                c={"dark.9"}
-                                                style={{ textTransform: "uppercase", textAlign: "right" }}
-                                                mr="md"
-                                                miw={80}
-                                            >
-                                                Address:
-                                            </Text>
-                                            <a
-                                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.address || "")}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                style={{ color: 'inherit', textDecoration: 'none' }}
-                                            >
-                                                {d.address}
-                                            </a>
-                                        </Flex>
-                                    }
-                                </Stack>
+                                <>
+                                    <Divider />
+                                    <ContactIconsRow d={d} />
+                                </>
+
                             }
                             {d.note &&
                                 <Box pt={"xs"}>
@@ -213,3 +170,134 @@ export function DebitList() {
         </>
     );
 }
+
+interface ContactIconsRowProps {
+    d: {
+        name: string,
+        amount: number,
+        phone?: string;
+        email?: string;
+        address?: string;
+        car?: string;
+    };
+}
+
+export const ContactIconsRow = ({ d }: ContactIconsRowProps) => {
+    const [opened, { open, close }] = useDisclosure(false);
+
+    return (
+        <>
+            {/* MODAL */}
+            <Modal opened={opened} onClose={close} title="Contact Information" centered styles={{ content: { paddingBottom: "var(--mantine-spacing-md)" }, title: { fontSize: "var(--mantine-font-size-xl)" } }}>
+                <Stack gap="md">
+                    <Divider />
+                    <Group justify="space-between" ml={"xs"}>
+                        <Text fw={700} size="lg">
+                            {d.name}
+                        </Text>
+
+                        <Text
+                            px="sm"
+                            py={4}
+                            bg="var(--mantine-primary-color-light)"
+                            c="var(--mantine-primary-color-9)"
+                            style={{ borderRadius: 999, fontWeight: 500 }}
+                        >
+                            {d.amount}
+                        </Text>
+                    </Group>
+                    <Divider />
+                    <Stack gap={"md"} mt={"sm"}>
+                        {d.phone && (
+                            <Flex align="center" gap="sm" mx={"xs"}>
+                                <IconPhone width={18} height={18} />
+                                <Text>{d.phone}</Text>
+                            </Flex>
+                        )}
+                        {d.email && (
+                            <Flex align="center" gap="sm" mx={"xs"}>
+                                <IconMail width={18} height={18} />
+                                <Text tt={"lowercase"}>{d.email}</Text>
+                            </Flex>
+                        )}
+                        {d.address && (
+                            <Flex align="center" gap="sm" mx={"xs"}>
+                                <IconMapPin width={18} height={18} />
+                                <Text tt={"capitalize"}>{d.address}</Text>
+                            </Flex>
+                        )}
+                        {d.car && (
+                            <Flex align="center" gap="sm" mx={"xs"}>
+                                <IconBarcode width={18} height={18} />
+                                <Text>{d.car}</Text>
+                            </Flex>
+                        )}
+                    </Stack>
+                </Stack>
+            </Modal>
+
+
+            {/* BUTTON + ICONS */}
+            <Group gap="xs" wrap="nowrap" justify="space-between" mt={"xs"} mr={"xs"}>
+                <Button variant="outline" color="primary" onClick={open}>
+                    Contact Info
+                </Button>
+                <Group>
+                    {d.car && (
+                        <Tooltip label="VIN">
+                            <ActionIcon variant="default">
+                                <IconBarcode width={20} height={20} />
+                            </ActionIcon>
+                        </Tooltip>
+                    )}
+
+                    {d.address && (
+                        <Tooltip label="Open in Maps">
+                            <ActionIcon
+                                component="a"
+                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.address)}`}
+                                target="_blank"
+                                variant="default"
+                            >
+                                <IconMapPin width={20} height={20} />
+                            </ActionIcon>
+                        </Tooltip>
+                    )}
+
+                    {d.email && (
+                        <Tooltip label="Send Email">
+                            <ActionIcon component="a" href={`mailto:${d.email}`} variant="default">
+                                <IconMail width={20} height={20} />
+                            </ActionIcon>
+                        </Tooltip>
+                    )}
+
+                    {d.phone && (
+                        <Tooltip label="Send Message">
+                            <ActionIcon
+                                component="a"
+                                href={`sms:${d.phone}`}
+                                variant="default"
+                            >
+                                <IconMessage width={20} height={20} />
+                            </ActionIcon>
+                        </Tooltip>
+                    )}
+
+                    {d.phone && (
+                        <Tooltip label="Call">
+                            <ActionIcon
+                                component="a"
+                                href={`tel:${d.phone}`}
+                                variant="default"
+                            >
+                                <IconPhone width={20} height={20} />
+                            </ActionIcon>
+                        </Tooltip>
+                    )}
+                </Group>
+            </Group>
+        </>
+
+    );
+};
