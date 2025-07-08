@@ -132,7 +132,7 @@ export function DebitList() {
                                     </Text>
                                 </Stack>
                                 <Flex gap="xs">
-                                    <ActionIcon onClick={() => openDebitPayment(d)} variant="light" color="yellow"><IconEdit width={18} height={18} /></ActionIcon>
+                                    <ActionIcon onClick={() => openDebitPayment(d)} variant="light" color="yellow" w={80}><Text fz="xs">Payments</Text></ActionIcon>
                                     <ActionIcon onClick={() => openEdit(d)} variant="light"><IconEdit width={18} height={18} /></ActionIcon>
                                     <ActionIcon onClick={() => setConfirmId(d.id)} variant="light" color="red"><IconTrash width={18} height={18} /></ActionIcon>
                                 </Flex>
