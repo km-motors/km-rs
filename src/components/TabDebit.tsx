@@ -31,6 +31,7 @@ import { FormsEnum } from './Forms';
 import dayjs from 'dayjs';
 import { VinViewModal } from './FormVIN';
 import { PAGES } from './FloatingMenu';
+import { serialize } from '@/utils/des';
 
 enum DebitFilterEnum {
     PAYED = "payed",
@@ -41,7 +42,7 @@ export function DebitList() {
     // observer pattern
     const [, setOpenedForm] = useLocalStorage<FormsEnum | undefined>({ key: "--opened-form", defaultValue: undefined });
     const [, setEditItem] = useLocalStorage<Debit | undefined>({ key: "--edit-mode-debit-item", defaultValue: undefined });
-    const [, setPaymentsItem] = useLocalStorage<Debit | undefined>({ key: "--debit-payments-item", defaultValue: undefined });
+    const [, setPaymentsItem] = useLocalStorage<Debit | undefined>({ key: "--debit-payments-item", defaultValue: undefined, serialize: serialize });
     const [filter, setFilter] = useLocalStorage<DebitFilterEnum | undefined>({ key: "--debit-filter", defaultValue: undefined });
     const [, setCurrentPage] = useLocalStorage<PAGES>({ key: "--current-page", defaultValue: PAGES.INCOME });
 
@@ -132,7 +133,7 @@ export function DebitList() {
                                     </Text>
                                 </Stack>
                                 <Flex gap="xs">
-                                    <ActionIcon onClick={() => openDebitPayment(d)} variant="light" color="yellow" w={80}><Text fz="xs">Payments</Text></ActionIcon>
+                                    <ActionIcon onClick={() => openDebitPayment(d)} variant="light" color="green" w={80}><Text fz="xs">Payments</Text></ActionIcon>
                                     <ActionIcon onClick={() => openEdit(d)} variant="light"><IconEdit width={18} height={18} /></ActionIcon>
                                     <ActionIcon onClick={() => setConfirmId(d.id)} variant="light" color="red"><IconTrash width={18} height={18} /></ActionIcon>
                                 </Flex>
